@@ -7,7 +7,7 @@ import random, time
 import requests
 import atexit
 import signal
-from market_maker import hudex
+from market_maker import dcex
 from market_maker import bitmex
 from market_maker import settings
 from market_maker.utils import constants, errors, math
@@ -198,7 +198,7 @@ class ExchangeInterface:
         return self.bitmex.cancel([order['orderID'] for order in orders])
 
 
-class HudexExchangeInterface:
+class DcexExchangeInterface:
     def __init__(self, email,password,dry_run=False):
         self.email=email
         self.password=password
@@ -206,11 +206,11 @@ class HudexExchangeInterface:
         if len(sys.argv) > 1:
             self.symbol = sys.argv[1]
         else:
-            self.symbol = settings.HudexSymbol
-        self.hudex = hudex.HUDEX(hudex_ws_url=settings.HUDEX_WS_URL, hudex_http_url=settings.HUDEX_HTTP_URL,
-                                 symbol=self.symbol,
-                                 email=self.email, password=self.password,
-                                 timeout=settings.TIMEOUT)
+            self.symbol = settings.DCEXSymbol
+        self.dcex = dcex.DCEX(dcex_ws_url=settings.DCEX_WS_URL, dcex_http_url=settings.DCEX_HTTP_URL,
+                                symbol=self.symbol,
+                                email=self.email, password=self.password,
+                                timeout=settings.TIMEOUT)
         self.executive_info = {"create_order_num": 0,
                                "create_order_ok_num": 0,
                                "cancel_order_num": 0,
@@ -224,7 +224,7 @@ class HudexExchangeInterface:
 
     def is_open(self):
         """Check that websockets are still open."""
-        return self.hudex.is_connected()
+        return self.dcex.is_connected()
 
     def cancel_all_orders(self):
         if self.dry_run:
@@ -235,7 +235,7 @@ class HudexExchangeInterface:
     def get_orders(self):
         if self.dry_run:
             return []
-        return self.hudex.http_open_orders()
+        return self.dcex.http_open_orders()
 
     def create_bulk_orders(self, orders):
         if self.dry_run:
@@ -244,7 +244,7 @@ class HudexExchangeInterface:
 
         for order in orders:
             self.executive_info["create_order_num"] += 1
-            response = self.hudex.create_order(order=order)
+            response = self.dcex.create_order(order=order)
 
             if response["error"] == None:
                 # 取出订单进行处理,将其放入orders_created中
@@ -258,7 +258,7 @@ class HudexExchangeInterface:
             return orders
         for order in orders:
             self.executive_info["cancel_order_num"] += 1
-            response = self.hudex.cancel_order(orderid=order["id"])
+            response = self.dcex.cancel_order(orderid=order["id"])
             if response["error"] == None:
                 self.executive_info["cancel_order_ok_num"] += 1
 
@@ -266,7 +266,7 @@ class HudexExchangeInterface:
         # 取消所有委托订单
         self.cancel_all_orders()
         # 获取账户资产情况
-        balace = self.hudex.get_balace()
+        balace = self.dcex.get_balace()
         if settings.BaseValuation == "DCA":
             if settings.BaseValuation in balace:
                 for k, v in balace.items():
@@ -274,7 +274,7 @@ class HudexExchangeInterface:
                         symbol = k + settings.BaseValuation
                         available = float(v["available"])
                         # 获取盘口价格信息
-                        depath_info = self.hudex.get_depath_info(symbol)
+                        depath_info = self.dcex.get_depath_info(symbol)
                         if depath_info:
                             asks = depath_info[1].get("asks", [])
                             bids = depath_info[1].get("bids", [])
@@ -297,7 +297,7 @@ class HudexExchangeInterface:
                     symbol = settings.BaseValuation + k
                     available = float(v["available"])
                     # 获取盘口价格信息
-                    depath_info = self.hudex.get_depath_info(symbol)
+                    depath_info = self.dcex.get_depath_info(symbol)
                     if depath_info:
                         asks = depath_info[1].get("asks", [])
                         bids = depath_info[1].get("bids", [])
@@ -316,7 +316,7 @@ class HudexExchangeInterface:
                                 break
 
     def init_executive_info(self):
-        balace = self.hudex.get_balace()
+        balace = self.dcex.get_balace()
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
         self.executive_info["init_balance"] = balace
         self.executive_info["start_time"] = start_time
@@ -324,7 +324,7 @@ class HudexExchangeInterface:
     def get_executive_report(self):
 
         self.sell_all_assert()
-        finish_balance = self.hudex.get_balace()
+        finish_balance = self.dcex.get_balace()
         finish_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
         self.executive_info["finish_balance"] = finish_balance
         self.executive_info["finish_time"] = finish_time
@@ -338,7 +338,7 @@ class OrderManager:
         self.email=email if email else settings.Email
         self.password=password if password  else  settings.Password
         self.exchange = ExchangeInterface(settings.DRY_RUN)
-        self.exchange_hudex = HudexExchangeInterface(email=email,password=password)
+        self.exchange_dcex= DcexExchangeInterface(email=email,password=password)
         # Once exchange is created, register exit handler that will always cancel orders
         # on any error.
 
@@ -354,8 +354,8 @@ class OrderManager:
 
     def reset(self):
 
-        self.exchange_hudex.cancel_all_orders()
-        self.exchange_hudex.init_executive_info()
+        self.exchange_dcex.cancel_all_orders()
+        self.exchange_dcex.init_executive_info()
 
     def get_ticker(self):
         ticker = self.exchange.get_ticker()
@@ -456,12 +456,12 @@ class OrderManager:
         if len(to_create) > 0:
             print("to_create:", to_create)
             time.sleep(0.5)
-            orders_created = self.exchange_hudex.create_bulk_orders(to_create)
+            orders_created = self.exchange_dcex.create_bulk_orders(to_create)
 
         return orders_created
 
     def cancel_bulk_orders(self, to_cancel):
-        self.exchange_hudex.cancel_bulk_orders(orders=to_cancel)
+        self.exchange_dcex.cancel_bulk_orders(orders=to_cancel)
 
     ###
     # Position Limits
@@ -516,12 +516,12 @@ class OrderManager:
 
     def check_connection(self):
         """Ensure the WS connections are still open."""
-        return self.exchange.is_open() and self.exchange_hudex.is_open()
+        return self.exchange.is_open() and self.exchange_dcex.is_open()
 
     def exit(self):
         logger.info("Shutting down. All open orders will be cancelled.")
         try:
-            self.exchange_hudex.cancel_all_orders()
+            self.exchange_dcex.cancel_all_orders()
             self.exchange.bitmex.exit()
         except errors.AuthenticationError as e:
             logger.info("Was not authenticated; could not cancel orders.")
@@ -530,17 +530,17 @@ class OrderManager:
         sys.exit()
 
     def print_executive_report(self):
-        # self.exchange_hudex.hudex()
-        hudex_executive_report = self.exchange_hudex.get_executive_report()
+        # self.exchange_dcex.dcex()
+        dcex_executive_report = self.exchange_dcex.get_executive_report()
         print("---------------------------执行报告--------------------------")
-        print("create_order_num:", hudex_executive_report["create_order_num"])
-        print("create_order_ok_num:", hudex_executive_report["create_order_ok_num"])
-        print("cancel_order_num:", hudex_executive_report["cancel_order_num"])
-        print("cancel_order_ok_num:", hudex_executive_report["cancel_order_ok_num"])
-        print("init_balance:", hudex_executive_report["init_balance"])
-        print("finish_balance:", hudex_executive_report["finish_balance"])
-        print("start_time:", hudex_executive_report["start_time"])
-        print("finish_time:", hudex_executive_report["finish_time"])
+        print("create_order_num:", dcex_executive_report["create_order_num"])
+        print("create_order_ok_num:", dcex_executive_report["create_order_ok_num"])
+        print("cancel_order_num:", dcex_executive_report["cancel_order_num"])
+        print("cancel_order_ok_num:", dcex_executive_report["cancel_order_ok_num"])
+        print("init_balance:", dcex_executive_report["init_balance"])
+        print("finish_balance:", dcex_executive_report["finish_balance"])
+        print("start_time:", dcex_executive_report["start_time"])
+        print("finish_time:", dcex_executive_report["finish_time"])
         print("_____________________________________________________________")
 
     def run_loop(self):
@@ -557,7 +557,7 @@ class OrderManager:
                 self.restart()
             self.sanity_check()  # Ensures health of mm - several cut-out points here
             try:
-                self.exchange_hudex.hudex.update_token()
+                self.exchange_dcex.dcex.update_token()
             except:
                 raise Exception("Token update err")
             self.place_orders()  # Creates desired orders and converges to existing orders

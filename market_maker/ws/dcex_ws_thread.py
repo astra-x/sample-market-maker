@@ -16,13 +16,13 @@ with hooks():  # Python 2/3 compat
     from urllib.parse import urlparse, urlunparse
 
 # poll as often as it wants.
-class HuMEXWebsocket():
+class DCEXWebsocket():
     # Don't grow a table larger than this amount. Helps cap memory usage.
     MAX_TABLE_LEN = 200
 
     def __init__(self):
         self.logger = logging.getLogger('root')
-        self.subscriptions=[settings.HudexSymbol]
+        self.subscriptions=[settings.dcexSymbol]
         self.__reset()
 
     def __del__(self):
@@ -102,7 +102,7 @@ class HuMEXWebsocket():
                 data_flag=symbol+"_"+method
                 self.data[data_flag] = message['params']
 
-        print("hudex websocket ---->message:",message)
+        print("dcex websocket ---->message:",message)
         # self.logger.debug(json.dumps(message))
         # print("------------->table:{},message:{}".format(message["table"],message))
 
@@ -163,7 +163,7 @@ if __name__ == "__main__":
     # add formatter to ch
     ch.setFormatter(formatter)
     logger.addHandler(ch)
-    ws = HuMEXWebsocket()
+    ws = DCEXWebsocket()
     ws.logger = logger
     ws.connect("ws://47.56.8.19:19090")
     while (ws.ws.sock.connected):

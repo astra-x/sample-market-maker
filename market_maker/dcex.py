@@ -1,4 +1,4 @@
-"""HUDEX API Connector."""
+"""dcex API Connector."""
 from __future__ import absolute_import
 import requests
 import time
@@ -6,27 +6,27 @@ import datetime
 import json
 import logging
 import math
-from market_maker.ws.hudex_ws_thread import HuMEXWebsocket
+from market_maker.ws.dcex_ws_thread import DCEXWebsocket
 
 
-class HUDEX(object):
-    """HUDEX API Connector."""
+class DCEX(object):
+    """dcex API Connector."""
 
-    def __init__(self, hudex_ws_url=None, hudex_http_url=None, symbol=None, token=None,
+    def __init__(self, dcex_ws_url=None, dcex_http_url=None, symbol=None, token=None,
                  email=None, password=None, timeout=7):
         """Init connector."""
         self.logger = logging.getLogger('root')
-        self.hudex_ws_url = hudex_ws_url
-        self.hudex_http_url = hudex_http_url
+        self.dcex_ws_url = dcex_ws_url
+        self.dcex_http_url = dcex_http_url
         self.token = token
-        self.hudex_symbol = symbol
+        self.dcex_symbol = symbol
         self.retries = 0  # initialize counter
         # Create websocket for streaming data
         self.timeout = timeout
         self.email = email
         self.password = password
-        self.ws = HuMEXWebsocket()
-        self.ws.connect(endpoint=hudex_ws_url, symbol=self.hudex_symbol)
+        self.ws = DCEXWebsocket()
+        self.ws.connect(endpoint=dcex_ws_url, symbol=self.dcex_symbol)
         self.update_token()
 
     # Public methods
@@ -86,7 +86,7 @@ class HUDEX(object):
         """Create multiple orders."""
         path = "/spots/order/put_limit"
         if "market" not in order:
-            order["market"] = self.hudex_symbol
+            order["market"] = self.dcex_symbol
         postdict = order
         return self._curl_bitmex(path=path, postdict=postdict, verb="POST")
 
@@ -98,7 +98,7 @@ class HUDEX(object):
             path=path,
             postdict={
                 "id": 1000000001,
-                "market": self.hudex_symbol,
+                "market": self.dcex_symbol,
                 "offset": offset,
                 "limit": limit
             },
@@ -113,7 +113,7 @@ class HUDEX(object):
                     path=path,
                     postdict={
                         "id": 1000000001,
-                        "market": self.hudex_symbol,
+                        "market": self.dcex_symbol,
                         "offset": off * limit,
                         "limit": limit
                     },
@@ -129,7 +129,7 @@ class HUDEX(object):
         postdict = {
             "id": 1000000002,  # 这个其实是标识哪次请求，前端创造的
             'order': orderid,
-            'market': self.hudex_symbol
+            'market': self.dcex_symbol
         }
         return self._curl_bitmex(path=path, postdict=postdict, verb="POST")
 
@@ -137,7 +137,7 @@ class HUDEX(object):
                      max_retries=None):
         """Send a request to BitMEX Servers."""
         # Handle URL
-        url = self.hudex_http_url + path
+        url = self.dcex_http_url + path
 
         if timeout is None:
             timeout = self.timeout

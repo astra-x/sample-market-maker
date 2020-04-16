@@ -200,11 +200,11 @@ and [websocket client.](https://github.com/BitMEX/api-connectors/tree/master/off
 
 
 
--------------------------------- Hudex desciption --------------------------------
+-------------------------------- DECX desciption --------------------------------
 
-settings.py：配置文件中有hudex相关的配置，使用者可以根据需要自行配置
+settings.py：配置文件中有DECX相关的配置，使用者可以根据需要自行配置
 
-hudex.py   ：主要是处理与hudex网站进行订单相关的交互的文件
+decx.py   ：主要是处理与DECX网站进行订单相关的交互的文件
 
 
 

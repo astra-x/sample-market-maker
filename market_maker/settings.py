@@ -119,12 +119,12 @@ WATCHED_FILES = ['market_maker_inner.py', 'bitmex.py', 'settings.py']
 
 CONTRACTS = ['XBTUSD']
 
-# --------------------------------hudex  setting-----------------------------------------
+# --------------------------------DCEX  setting-----------------------------------------
 
 ##url
 
-HUDEX_HTTP_URL="http://47.97.125.121:3000"
-HUDEX_WS_URL="ws://47.96.155.19:19090"
+DCEX_HTTP_URL="http://47.97.125.121:3000"
+DCEX_WS_URL="ws://47.96.155.19:19090"
 
 
 
@@ -138,8 +138,8 @@ MIN_ORDER_SIZE=1
 
 
 
-# hudex token ，可以不配置，可以根据账户密码实时更新生成
-HudexToken=""
+# DCEX token ，可以不配置，可以根据账户密码实时更新生成
+DCEXToken=""
 
 # 登录账户，如果创建进程时没传则使用该默认账户
 Email="youtao.xing@icloud.com"
@@ -147,7 +147,7 @@ Email="youtao.xing@icloud.com"
 Password="1234!abcd"
 
 # 交易品种
-HudexSymbol="ICPDCA"
+DCEXSymbol="ICPDCA"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime=10
 # 运行时间
