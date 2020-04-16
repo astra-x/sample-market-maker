@@ -1,5 +1,9 @@
 from os.path import join
 import logging
+import os
+
+
+Market_Maker_Dir = os.path.dirname(os.path.abspath(__file__))
 
 ########################################################################################################################
 # Connection/Auth
@@ -113,7 +117,8 @@ LOG_LEVEL = logging.INFO
 ORDERID_PREFIX = "mm_bitmex_"
 
 # If any of these files (and this file) changes, reload the bot.ll
-WATCHED_FILES = ['market_maker_inner.py', 'bitmex.py', 'settings.py']
+WATCHED_FILES = [os.path.join(Market_Maker_Dir,'market_maker_inner.py'), os.path.join(Market_Maker_Dir,'bitmex.py'),\
+                  os.path.join(Market_Maker_Dir,'settings.py')]
 
 
 

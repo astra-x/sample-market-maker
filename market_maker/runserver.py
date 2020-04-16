@@ -1,7 +1,11 @@
+import sys, os
+RootDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sys.path.insert(0, RootDir)
 import time
 from market_maker.utils import  constants
 from market_maker.utils.log import logger
-from market_maker.market_maker import OrderManager
+from market_maker.market_maker_inner import OrderManager
 from market_maker import settings
 
 
@@ -17,13 +21,10 @@ def run(mm):
         sys.exit()
 
 if __name__=="__main__":
-    import sys, os
+
     from multiprocessing import Process
     import threading
 
-
-    RootDir = os.path.dirname(os.path.abspath(__file__))
-    sys.path.insert(0, RootDir)
     # # 初步：设置网络代理
     os.environ['http_proxy'] = settings.NetworkProxy
     os.environ['https_proxy'] = settings.NetworkProxy

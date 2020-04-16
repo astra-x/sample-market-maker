@@ -18,8 +18,8 @@ def run():
     else:
         # import market_maker here rather than at the top because it depends on settings.py existing
         try:
-            from market_maker import market_maker
-            market_maker.run()
+            from market_maker import market_maker_inner
+            market_maker_inner.run()
         except ImportError:
             print('Can\'t find settings.py. Run "marketmaker setup" to create project.')
 

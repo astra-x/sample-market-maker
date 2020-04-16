@@ -1,6 +1,4 @@
 .PHONY: runserver
 
 runserver:
-	python3 ./runserver.py
-
-
+	python3 ./market_maker/runserver.py

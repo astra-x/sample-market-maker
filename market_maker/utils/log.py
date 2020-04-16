@@ -1,5 +1,5 @@
 import logging
-from market_maker.settings import settings
+from market_maker import settings
 
 
 def setup_custom_logger(name, log_level=settings.LOG_LEVEL):
@@ -12,4 +12,4 @@ def setup_custom_logger(name, log_level=settings.LOG_LEVEL):
     logger.setLevel(log_level)
     logger.addHandler(handler)
     return logger
-logger=setup_custom_logger()
+logger=setup_custom_logger("logger")

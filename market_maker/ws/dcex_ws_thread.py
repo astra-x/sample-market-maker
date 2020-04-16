@@ -22,7 +22,7 @@ class DCEXWebsocket():
 
     def __init__(self):
         self.logger = logging.getLogger('root')
-        self.subscriptions=[settings.dcexSymbol]
+        self.subscriptions=[settings.DCEXSymbol]
         self.__reset()
 
     def __del__(self):
@@ -91,9 +91,7 @@ class DCEXWebsocket():
     def __on_message(self, message):
         '''Handler for parsing WS messages.'''
         message = json.loads(message)
-        # {'id': None, 'method': 'depth.update',
-        # 'params': [True, {'bids': [['130', '3'],
-        # ['65', '10']], 'asks': []}, 'ICPDCA']}
+
         if "method" in message:
             method = message["method"]
 
@@ -102,9 +100,7 @@ class DCEXWebsocket():
                 data_flag=symbol+"_"+method
                 self.data[data_flag] = message['params']
 
-        print("dcex websocket ---->message:",message)
-        # self.logger.debug(json.dumps(message))
-        # print("------------->table:{},message:{}".format(message["table"],message))
+
 
     def __on_open(self):
         self.logger.debug("Websocket Opened.")
