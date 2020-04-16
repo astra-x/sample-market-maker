@@ -1,17 +1,6 @@
-.PHONY: clean dev publish
-DIST := dist
+.PHONY: runserver
 
-clean:
-	rm -rf $(DIST)
+runserver:
+	python3 ./runserver.py
 
-build: clean
-	python setup.py sdist
 
-dev:
-	python setup.py develop
-
-publish: clean build
-	twine upload $(DIST)/*
-
-publish-test: clean build
-	twine upload -r pypitest $(DIST)/*

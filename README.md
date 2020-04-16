@@ -1,4 +1,17 @@
-# BitMEX Market Maker
+#  sample Market Maker
+
+
+----------------------------------------- Overall description --------------------------------------------
+how to start:
+    在sample-market-maker目录下执行make，项目就跑起来了
+ 
+
+before start sample-market-maker，we need to reset configuration file：
+      settings.py这个配置文件根据说明有些地方需要重新配置
+
+    
+
+----------------------------------------- Bitmex part description ----------------------------------------
 
 This is a sample market making bot for use with [BitMEX](https://www.bitmex.com).
 
@@ -184,3 +197,14 @@ This module supports Python 3.5 and later.
 
 BitMEX has a Python [REST client](https://github.com/BitMEX/api-connectors/tree/master/official-http/python-swaggerpy)
 and [websocket client.](https://github.com/BitMEX/api-connectors/tree/master/official-ws/python)
+
+
+
+-------------------------------- Hudex desciption --------------------------------
+
+settings.py：配置文件中有hudex相关的配置，使用者可以根据需要自行配置
+
+hudex.py   ：主要是处理与hudex网站进行订单相关的交互的文件
+
+
+
