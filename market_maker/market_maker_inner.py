@@ -258,6 +258,7 @@ class DcexExchangeInterface:
             return orders
         for order in orders:
             self.executive_info["cancel_order_num"] += 1
+            time.sleep(1)
             response = self.dcex.cancel_order(orderid=order["id"])
             if response["error"] == None:
                 self.executive_info["cancel_order_ok_num"] += 1
@@ -334,14 +335,15 @@ class DcexExchangeInterface:
 
 class OrderManager:
     def __init__(self,cycleTime,email,password):
+
         self.CycleTime=cycleTime if cycleTime else  settings.cycleTime
         self.email=email if email else settings.Email
         self.password=password if password  else  settings.Password
+        time.sleep(self.CycleTime)  #这是为了两个目的，  一是不同时那么多请求去链接bitmex websocket以免被禁用，二是不同时重置order
         self.exchange = ExchangeInterface(settings.DRY_RUN)
         self.exchange_dcex= DcexExchangeInterface(email=email,password=password)
         # Once exchange is created, register exit handler that will always cancel orders
         # on any error.
-
         atexit.register(self.exit)
         signal.signal(signal.SIGTERM, self.exit)
         if settings.DRY_RUN:
@@ -349,7 +351,6 @@ class OrderManager:
         else:
             logger.info("Order Manager initializing, connecting to BitMEX. Live run: executing real trades.")
         self.instrument = self.exchange.get_instrument()
-        time.sleep(self.CycleTime)
         self.reset()
 
     def reset(self):
@@ -364,8 +365,8 @@ class OrderManager:
         # Set up our buy & sell positions as the smallest possible unit above and below the current spread
         # and we'll work out from there. That way we always have the best price but we don't kill wide
 
-        self.start_position_buy = ticker["buy"] + self.instrument['tickSize']
-        self.start_position_sell = ticker["sell"] - self.instrument['tickSize']
+        self.start_position_buy = ticker["buy"]
+        self.start_position_sell = ticker["sell"]
 
         if settings.MAINTAIN_SPREADS:
             if ticker['buy'] == self.exchange.get_highest_buy()['price']:
@@ -397,21 +398,22 @@ class OrderManager:
         if settings.MAINTAIN_SPREADS:
             start_position = self.start_position_buy if index < 0 else self.start_position_sell
             # First positions (index 1, -1) should start right at start_position, others should branch from there
-            index = index + 1 if index < 0 else index - 1
+            # index = index + 1 if index < 0 else index - 1
         else:
             # Offset mode: ticker comes from a reference exchange and we define an offset.
-            start_position = self.start_position_buy if index < 0 else self.start_position_sell
+            start_position = self.start_position_mid
 
             # If we're attempting to sell, but our sell price is actually lower than the buy,
             # move over to the sell side.
-            if index > 0 and start_position < self.start_position_buy:
-                start_position = self.start_position_sell
-            # Same for buys.
-            if index < 0 and start_position > self.start_position_sell:
-                start_position = self.start_position_buy
+            # if index > 0 and start_position < self.start_position_buy:
+            #     start_position = self.start_position_sell
+            # # Same for buys.
+            # if index < 0 and start_position > self.start_position_sell:
+            #     start_position = self.start_position_buy
 
         # 这是创造价格的策略
-        return math.toNearest(start_position * (1 + settings.INTERVAL) ** index, self.instrument['tickSize'])
+        # return math.toNearest(start_position * (1 + settings.INTERVAL) ** index, self.instrument['tickSize'])  #原来的
+        return math.toNearest2(start_position,index)  #现在的
 
     ###
     # Orders
@@ -421,6 +423,7 @@ class OrderManager:
         buy_orders = []
         sell_orders = []
         for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
+            self.get_ticker()
             buy_orders.append(self.prepare_order(-i))
             sell_orders.append(self.prepare_order(i))
         to_cancel = self.converge_orders(buy_orders, sell_orders)
@@ -434,19 +437,21 @@ class OrderManager:
         if settings.RANDOM_ORDER_SIZE is True:
             quantity = random.randint(settings.MIN_ORDER_SIZE, settings.MAX_ORDER_SIZE)
         else:
-            quantity = settings.ORDER_START_SIZE + ((abs(index) - 1) * settings.ORDER_STEP_SIZE)
+
+            quantity =round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
+                            (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
         # 这是创造价格的策略
         price = self.get_price_offset(index)
 
         # 模拟拉盘和砸盘
-        if index<0 and random.randint(1, 9) == 1:
-            price=price*1.1
-            quantity=quantity*4
-        if index>0 and random.randint(1,9)==2:
-            price=price*0.9
-            quantity=quantity*4
+        # if index<0 and random.randint(1, 9) == 1:
+        #     price=price*1.1
+        #     quantity=quantity*4
+        # if index>0 and random.randint(1,9)==2:
+        #     price=price*0.9
+        #     quantity=quantity*4
 
-        return {"id": 1000000015, "price": str(price / 1000), "amount": str(quantity), "side": 2 if index < 0 else 1}
+        return {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2 if index < 0 else 1}
 
     def converge_orders(self, buy_orders, sell_orders):
         to_create = []
@@ -455,7 +460,8 @@ class OrderManager:
         to_create.extend(sell_orders)
         if len(to_create) > 0:
             print("to_create:", to_create)
-            time.sleep(0.5)
+            random.shuffle(to_create)
+            time.sleep(1)
             orders_created = self.exchange_dcex.create_bulk_orders(to_create)
 
         return orders_created
@@ -489,20 +495,21 @@ class OrderManager:
         """Perform checks before placing orders."""
 
         # Check if OB is empty - if so, can't quote.
-        self.exchange.check_if_orderbook_empty()
+        # self.exchange.check_if_orderbook_empty()
         # Ensure market is still open.
         self.exchange.check_market_open()
-
+        #
         # Get ticker, which sets price offsets and prints some debugging info.
         ticker = self.get_ticker()
-
-        # Sanity check:
-        if self.get_price_offset(-1) >= ticker["sell"] or self.get_price_offset(1) <= ticker["buy"]:
-            logger.error("Buy: %s, Sell: %s" % (self.start_position_buy, self.start_position_sell))
-            logger.error("First buy position: %s\nBitMEX Best Ask: %s\nFirst sell position: %s\nBitMEX Best Bid: %s" %
-                         (self.get_price_offset(-1), ticker["sell"], self.get_price_offset(1), ticker["buy"]))
-            logger.error("Sanity check failed, exchange data is inconsistent")
-            self.exit()
+        #
+        # # Sanity check:
+        # if self.get_price_offset(-1) >= ticker["sell"] or self.get_price_offset(1) <= ticker["buy"]:
+        #     logger.error("Buy: %s, Sell: %s" % (self.start_position_buy, self.start_position_sell))
+        #     logger.error("First buy position: %s\nBitMEX Best Ask: %s\nFirst sell position: %s\nBitMEX Best Bid: %s" %
+        #                  (self.get_price_offset(-1), ticker["sell"], self.get_price_offset(1), ticker["buy"]))
+        #     logger.error("Sanity check failed, exchange data is inconsistent")
+        #     self.exit()
+        return True
 
     ###
     # Running
@@ -590,3 +597,5 @@ def cost(instrument, quantity, price):
 
 def margin(instrument, quantity, price):
     return cost(instrument, quantity, price) * instrument["initMargin"]
+
+

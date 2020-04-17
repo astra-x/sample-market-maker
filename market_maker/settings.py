@@ -41,18 +41,19 @@ ORDER_PAIRS = 10
 # ORDER_START_SIZE will be the number of contracts submitted on level 1
 # Number of contracts from level 1 to ORDER_PAIRS - 1 will follow the function
 # [ORDER_START_SIZE + ORDER_STEP_SIZE (Level -1)]
-ORDER_START_SIZE = 10
-ORDER_STEP_SIZE = 10
+# ORDER_START_SIZE = 10
+# ORDER_STEP_SIZE = 10
 
 # Distance between successive orders, as a percentage (example: 0.005 for 0.5%)
-INTERVAL = 0.005
+# INTERVAL = 0.005 #原来的
+
 
 # Minimum spread to maintain, in percent, between asks & bids
 MIN_SPREAD = 0.01
 
 # If True, market-maker will place orders just inside the existing spread and work the interval % outwards,
 # rather than starting in the middle and killing potentially profitable spreads.
-MAINTAIN_SPREADS = True
+MAINTAIN_SPREADS = False
 
 # This number defines far much the price of an existing order can be from a desired order before it is amended.
 # This is useful for avoiding unnecessary calls and maintaining your ratelimits.
@@ -135,11 +136,25 @@ DCEX_WS_URL="ws://47.96.155.19:19090"
 
 
 #order -quantitiy是否随机生成
-RANDOM_ORDER_SIZE=True
+RANDOM_ORDER_SIZE=False
 # 随机生成的quantitiy最大是多少
 MAX_ORDER_SIZE=10
 # 随机生成的quantitiy最小是多少
 MIN_ORDER_SIZE=1
+
+# 基础数量最大
+ORDER_START_MAX_SIZE = 0.30
+# 基础数量最小
+ORDER_START_MIN_SIZE = 0.01
+
+# 数量间隔
+ORDER_STEP_SIZE = 0.01
+
+#价格缩放倍数
+PRICE_MINIFICATION=10
+
+#价格间隔
+PRICE_INTERVAL = 0.05  #现在的
 
 
 
@@ -156,18 +171,20 @@ DCEXSymbol="ICPDCA"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime=10
 # 运行时间
-RunTime=500
+RunTime=1000000000000000
 #基础计价方式，相当于人民币
 BaseValuation="DCA"
 
 # 创建多个账户共同执行
 MarketMakers = [
-    {"CycleTime": 30, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 30, "Email": "1263624209@qq.com", "Password": "135246zr"},
-    {"CycleTime": 60, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 60, "Email": "1263624209@qq.com", "Password": "135246zr"},
-    {"CycleTime": 120, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 120, "Email": "1263624209@qq.com", "Password": "135246zr"}
+    {"CycleTime": 5, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    {"CycleTime": 7, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    {"CycleTime": 23, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    {"CycleTime": 29, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    # {"CycleTime": 150, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    # {"CycleTime": 120, "Email": "1263624209@qq.com", "Password": "135246zr"}
 ]
 
 # 网络代理设置

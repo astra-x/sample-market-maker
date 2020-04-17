@@ -1,4 +1,5 @@
 from decimal import Decimal
+from market_maker import settings
 
 def toNearest(num, tickSize):
     """Given a number, round it to the nearest tick. Very useful for sussing float error
@@ -7,3 +8,11 @@ def toNearest(num, tickSize):
        Use this after adding/subtracting/multiplying numbers."""
     tickDec = Decimal(str(tickSize))
     return float((Decimal(round(num / tickSize, 0)) * tickDec))
+
+
+def toNearest2(start_position,index):
+    start_position=round(start_position/settings.PRICE_MINIFICATION, 1)
+    return start_position+settings.PRICE_INTERVAL*index
+
+
+
