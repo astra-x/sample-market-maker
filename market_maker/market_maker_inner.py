@@ -246,7 +246,7 @@ class DcexExchangeInterface:
             self.executive_info["create_order_num"] += 1
             response = self.dcex.create_order(order=order)
 
-            if response["error"] == None:
+            if "error" in response and response["error"] == None:
                 # 取出订单进行处理,将其放入orders_created中
                 self.executive_info["create_order_ok_num"] += 1
                 orders_created.append(response["result"])
@@ -259,9 +259,11 @@ class DcexExchangeInterface:
         for order in orders:
             self.executive_info["cancel_order_num"] += 1
             time.sleep(1)
+
             response = self.dcex.cancel_order(orderid=order["id"])
-            if response["error"] == None:
+            if "error" in response and response["error"] == None:
                 self.executive_info["cancel_order_ok_num"] += 1
+
 
     def sell_all_assert(self):
         # 取消所有委托订单

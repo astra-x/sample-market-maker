@@ -69,7 +69,7 @@ class DCEX(object):
             },
             verb="POST"
         )
-        if response["error"] == None:
+        if "error" in response and response["error"] == None:
             return response["result"]
         return []
 
@@ -104,7 +104,7 @@ class DCEX(object):
             },
             verb="POST"
         )
-        if response["result"]:
+        if "result"in response and response["result"]:
             orders.extend(response["result"]["records"])
             total_order_num = response["result"]["total"]
             offset_amount = math.ceil(total_order_num / limit)
@@ -119,7 +119,7 @@ class DCEX(object):
                     },
                     verb="POST"
                 )
-                if response["result"]:
+                if "result" in response and response["result"]:
                     orders.extend(response["result"]["records"])
         return orders
 
@@ -167,7 +167,7 @@ class DCEX(object):
             return self._curl_bitmex(path, query, postdict, timeout, verb, rethrow_errors, max_retries)
 
         # Make the request
-        response = None
+        response = ""
 
         try:
 
@@ -178,8 +178,6 @@ class DCEX(object):
 
         except requests.exceptions.HTTPError as e:
 
-            if response is None:
-                raise e
 
             # 401 - Auth error. This is fatal.
             if response.status_code == 401:
@@ -262,18 +260,27 @@ class DCEX(object):
         except requests.exceptions.Timeout as e:
             # Timeout, re-run this request
             self.logger.warning("Timed out on request: %s (%s), retrying..." % (path, json.dumps(postdict or '')))
-            return retry()
+            try:
+                retry()
+            except:
+                print("retry error")
 
         except requests.exceptions.ProxyError as e:
             self.logger.warning("Unable to contact the BitMEX API (%s). Please check the URL. Retrying. " +
                                 "Request: %s %s \n %s" % (e, url, json.dumps(postdict)))
             time.sleep(1)
-            return retry()
+            try:
+                retry()
+            except:
+                print("retry error")
         except Exception as e:
             print(e)
 
 
+
         # Reset retry counter on success
         self.retries = 0
-        print("url:{},------->response:{},---->postdict:{}".format(url, response.json(),postdict))
-        return response.json()
+        # print("url:{},------->response:{},---->postdict:{}".format(url, response.json(),postdict))
+        if response:
+            response=response.json()
+        return response
