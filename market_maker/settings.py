@@ -138,9 +138,9 @@ DCEX_WS_URL="ws://47.96.155.19:19090"
 #order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE=False
 # 随机生成的quantitiy最大是多少
-MAX_ORDER_SIZE=10
+MAX_ORDER_SIZE=1
 # 随机生成的quantitiy最小是多少
-MIN_ORDER_SIZE=1
+MIN_ORDER_SIZE=0.01
 
 # 基础数量最大
 ORDER_START_MAX_SIZE = 0.30
@@ -177,18 +177,32 @@ BaseValuation="DCA"
 
 # 创建多个账户共同执行
 MarketMakers = [
-    {"CycleTime": 5, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 7, "Email": "1263624209@qq.com", "Password": "135246zr"},
-    {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
-    {"CycleTime": 23, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 29, "Email": "1263624209@qq.com", "Password": "135246zr"},
-    # {"CycleTime": 150, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    # {"CycleTime": 120, "Email": "1263624209@qq.com", "Password": "135246zr"}
+
+    {"CycleTime": 3, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+    {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+    {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr"},
+
+    # {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    # {"CycleTime": 13, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+    # {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+    # {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    #
+    {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+    {"CycleTime": 23, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+    {"CycleTime": 25, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    #
+    {"CycleTime": 27, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    {"CycleTime": 29, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+    {"CycleTime": 31, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+    {"CycleTime": 33, "Email": "1263624209@qq.com", "Password": "135246zr"},
 ]
 
 # 网络代理设置
 NetworkProxy="http://127.0.0.1:7890"
+ProxyHOST="http://127.0.0.1"
+ProxyPORT=7890
 
 
 

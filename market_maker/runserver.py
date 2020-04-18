@@ -25,36 +25,39 @@ if __name__=="__main__":
     from multiprocessing import Process
     import threading
 
-    # # 初步：设置网络代理
+    # # # 初步：设置网络代理
     os.environ['http_proxy'] = settings.NetworkProxy
     os.environ['https_proxy'] = settings.NetworkProxy
 
 
     # #第二步：起服务，将参数传入MM进程里，对setting配置进行重置
-    p_l = []
+    p_dic ={}
     for mm in settings.MarketMakers:
         # 这边开启子进程
-        p=Process(target=run,args=(mm,),name=mm["CycleTime"])
-        p_l.append(p)
+        p=Process(target=run,args=(mm,))
         p.start()
+        p_dic[mm["CycleTime"]] = p
 
     # 开启线程去监视进程是否挂了，如果挂了就重启
     # -------------------------------------------------------
     def check_child_process_alive():
         while 1:
-            for p in p_l:
+            for pname,p in p_dic.items():
                 if not p.is_alive():
                     for mm in  settings.MarketMakers:
-                       if mm["CycleTime"]==p.name:
-                           p = Process(target=run, args=(mm,), )
-                           p_l.append(p)
+                       if mm["CycleTime"]==pname:
+                           p = Process(target=run, args=(mm,))
                            p.start()
+                           p_dic[mm["CycleTime"]] = p
+
+                else:
+                    print("------》》》当前运行的服务名为：",p.name)
             time.sleep(3)
     t1 = threading.Thread(target=check_child_process_alive)
     t1.daemon=True
     t1.start()
     # --------------------------------------------------------
 
-    for p in p_l:
+    for pname,p in p_dic.items():
         p.join()
     print('结束了')

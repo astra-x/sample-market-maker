@@ -264,11 +264,14 @@ class DCEX(object):
             self.logger.warning("Timed out on request: %s (%s), retrying..." % (path, json.dumps(postdict or '')))
             return retry()
 
-        except requests.exceptions.ConnectionError as e:
+        except requests.exceptions.ProxyError as e:
             self.logger.warning("Unable to contact the BitMEX API (%s). Please check the URL. Retrying. " +
                                 "Request: %s %s \n %s" % (e, url, json.dumps(postdict)))
             time.sleep(1)
             return retry()
+        except Exception as e:
+            print(e)
+
 
         # Reset retry counter on success
         self.retries = 0
