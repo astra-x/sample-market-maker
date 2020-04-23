@@ -1,7 +1,7 @@
 import sys, os
-RootDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+RootDir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, RootDir)
+
 import time
 from market_maker.utils import  constants
 from market_maker.utils.log import logger
@@ -25,12 +25,9 @@ if __name__=="__main__":
     from multiprocessing import Process
     import threading
 
-    # # # 初步：设置网络代理
-    os.environ['http_proxy'] = settings.NetworkProxy
-    os.environ['https_proxy'] = settings.NetworkProxy
 
 
-    # #第二步：起服务，将参数传入MM进程里，对setting配置进行重置
+    # #第一步：起服务，将参数传入MM进程里，对setting配置进行重置
     p_dic ={}
     for mm in settings.MarketMakers:
         # 这边开启子进程
@@ -52,7 +49,7 @@ if __name__=="__main__":
                            p_dic[mm["CycleTime"]] = p
 
                 else:
-                    print("------》》》当前运行的服务名为：",p.name)
+                    print("------》》》当前运行的服务名为：%s,对应运行周期为%s"%(p.name,str(pname)))
             time.sleep(3)
     t1 = threading.Thread(target=check_child_process_alive)
     t1.daemon=True
@@ -61,4 +58,5 @@ if __name__=="__main__":
 
     for pname,p in p_dic.items():
         p.join()
+    # OrderManager().restart()
     print('结束了')

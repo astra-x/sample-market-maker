@@ -1,4 +1,4 @@
-"""dcex API Connector."""
+"""Client API Connector."""
 from __future__ import absolute_import
 import requests
 import time
@@ -6,27 +6,27 @@ import datetime
 import json
 import logging
 import math
-from market_maker.ws.dcex_ws_thread import DCEXWebsocket
+from market_maker.ws.client_ws_thread import ClientWebsocket
 
 
-class DCEX(object):
-    """dcex API Connector."""
+class Client(object):
+    """Client API Connector."""
 
-    def __init__(self, dcex_ws_url=None, dcex_http_url=None, symbol=None, token=None,
+    def __init__(self, client_ws_url=None, client_http_url=None, symbol=None, token=None,
                  email=None, password=None, timeout=7):
         """Init connector."""
         self.logger = logging.getLogger('root')
-        self.dcex_ws_url = dcex_ws_url
-        self.dcex_http_url = dcex_http_url
+        self.client_ws_url = client_ws_url
+        self.client_http_url = client_http_url
         self.token = token
-        self.dcex_symbol = symbol
+        self.client_symbol = symbol
         self.retries = 0  # initialize counter
         # Create websocket for streaming data
         self.timeout = timeout
         self.email = email
         self.password = password
-        self.ws = DCEXWebsocket()
-        self.ws.connect(endpoint=dcex_ws_url, symbol=self.dcex_symbol)
+        self.ws = ClientWebsocket()
+        self.ws.connect(endpoint=client_ws_url, symbol=symbol)
         self.update_token()
 
     # Public methods
@@ -36,8 +36,8 @@ class DCEX(object):
 
     # 去更新token
     def update_token(self):
-        print("self.email:",self.email)
-        print("self.password:",self.password)
+        # print("self.email:",self.email)
+        # print("self.password:",self.password)
         token = self.get_token(email=self.email, password=self.password)
         if token:
             self.token = token
@@ -86,7 +86,7 @@ class DCEX(object):
         """Create multiple orders."""
         path = "/spots/order/put_limit"
         if "market" not in order:
-            order["market"] = self.dcex_symbol
+            order["market"] = self.client_symbol
         postdict = order
         return self._curl_bitmex(path=path, postdict=postdict, verb="POST")
 
@@ -98,7 +98,7 @@ class DCEX(object):
             path=path,
             postdict={
                 "id": 1000000001,
-                "market": self.dcex_symbol,
+                "market": self.client_symbol,
                 "offset": offset,
                 "limit": limit
             },
@@ -113,7 +113,7 @@ class DCEX(object):
                     path=path,
                     postdict={
                         "id": 1000000001,
-                        "market": self.dcex_symbol,
+                        "market": self.client_symbol,
                         "offset": off * limit,
                         "limit": limit
                     },
@@ -129,7 +129,7 @@ class DCEX(object):
         postdict = {
             "id": 1000000002,  # 这个其实是标识哪次请求，前端创造的
             'order': orderid,
-            'market': self.dcex_symbol
+            'market': self.client_symbol
         }
         return self._curl_bitmex(path=path, postdict=postdict, verb="POST")
 
@@ -137,7 +137,7 @@ class DCEX(object):
                      max_retries=None):
         """Send a request to BitMEX Servers."""
         # Handle URL
-        url = self.dcex_http_url + path
+        url = self.client_http_url + path
 
         if timeout is None:
             timeout = self.timeout
@@ -170,6 +170,7 @@ class DCEX(object):
         response = ""
 
         try:
+
 
             response = requests.request(verb, url, json=postdict, headers=header, params=query)
             # prepped = self.session.prepare_request(req)
@@ -264,6 +265,7 @@ class DCEX(object):
                 retry()
             except:
                 print("retry error")
+                return response
 
         except requests.exceptions.ProxyError as e:
             self.logger.warning("Unable to contact the BitMEX API (%s). Please check the URL. Retrying. " +
@@ -273,14 +275,15 @@ class DCEX(object):
                 retry()
             except:
                 print("retry error")
+                return response
         except Exception as e:
-            print(e)
+            print("_curl_bitmex  except Exception as e:",e)
 
 
 
         # Reset retry counter on success
         self.retries = 0
-        # print("url:{},------->response:{},---->postdict:{}".format(url, response.json(),postdict))
+        print("url:{},------->response:{},---->postdict:{}".format(url, response.json(),postdict))
         if response:
             response=response.json()
         return response

@@ -16,13 +16,11 @@ with hooks():  # Python 2/3 compat
     from urllib.parse import urlparse, urlunparse
 
 # poll as often as it wants.
-class DCEXWebsocket():
+class GateioWebsocket():
     # Don't grow a table larger than this amount. Helps cap memory usage.
     MAX_TABLE_LEN = 200
-
     def __init__(self):
         self.logger = logging.getLogger('root')
-        self.subscriptions=[settings.DCEXSymbol]
         self.__reset()
 
     def __del__(self):
@@ -32,12 +30,11 @@ class DCEXWebsocket():
         '''Connect to the websocket and initialize data stores.'''
         self.symbol = symbol
         # Get WS URL and connect.
-        wsURL = endpoint
+        wsURL= os.path.join(endpoint,self.symbol)
         self.logger.info("Connecting to %s" % wsURL)
         self.__connect(wsURL)
         # 订阅盘口
-        self.subscribe_depath()
-
+        self.subscribe()
         self.logger.info('Connected to WS. Waiting for data images, this may take a moment...')
 
 
@@ -58,24 +55,22 @@ class DCEXWebsocket():
         self.logger.debug("Starting thread")
 
         ssl_defaults = ssl.get_default_verify_paths()
-        sslopt_ca_certs = {'ca_certs': ssl_defaults.cafile}
+
         self.ws = websocket.WebSocketApp(wsURL,
                                          on_message=self.__on_message,
                                          on_close=self.__on_close,
                                          on_open=self.__on_open,
-                                         on_error=self.__on_error,
-
-                                         )
+                                         on_error=self.__on_error)
 
         setup_custom_logger('websocket', log_level=settings.LOG_LEVEL)
         self.wst = threading.Thread(
-            target=lambda: self.ws.run_forever(sslopt=sslopt_ca_certs))
+            target=lambda: self.ws.run_forever())
         self.wst.daemon = True
         self.wst.start()
         self.logger.info("Started thread")
 
         # Wait for connect before continuing
-        conn_timeout = 5
+        conn_timeout = 10
         # print("self.ws.sock:",self.ws.sock)
         # print("self.ws.sock.connected:",self.ws.sock.connected)
         while (not self.ws.sock or not self.ws.sock.connected) and conn_timeout and not self._error:
@@ -83,7 +78,7 @@ class DCEXWebsocket():
             conn_timeout -= 1
 
         if not conn_timeout or self._error:
-            self.logger.error("Couldn't connect to WS! Exiting.")
+            self.logger.error("Couldn't connect to gateio WS! Exiting.")
             self.exit()
             sys.exit(1)
 
@@ -91,15 +86,21 @@ class DCEXWebsocket():
     def __on_message(self, message):
         '''Handler for parsing WS messages.'''
         message = json.loads(message)
+        print("message-------------------->>>:",message)
+        channel = message['channel'] if 'channel' in message else None
+        event = message['event'] if 'event' in message else None
+        if event=="subscribe":
+            if message['result']["status"]=="success":
+                self.logger.debug("Subscribed to %s." % message['channel'])
+            else:
+                self.error("Unable to subscribe to %s." %
+                           (message['channel']))
 
-        if "method" in message:
-            method = message["method"]
-
-            if method == "depth.update":
-                symbol =message['params'][2]
-                data_flag=symbol+"_"+method
-                self.data[data_flag] = message['params']
-
+        else:
+            if event == "update":
+                result = message['result']
+                if result:
+                    self.data[channel]=result
 
 
     def __on_open(self):
@@ -109,7 +110,7 @@ class DCEXWebsocket():
         self.logger.info('Websocket Closed')
         self.exit()
 
-    def __on_error(self, ws, error):
+    def __on_error(self,  error):
         if not self.exited:
             self.error(error)
 
@@ -119,34 +120,60 @@ class DCEXWebsocket():
         self.exited = False
         self._error = None
 
+    def subscribe(self):
+        self.subscribe_ticker()
+        self.subscribe_trades()
+
+
 # 订阅请求发送
     #订阅盘口
-    def  subscribe_depath(self):
-        for subcribe in self.subscriptions:
-            data={
-                "method": "depth.subscribe",
-                "id": 1516681176,
-                "params": [
-                    subcribe,
-                    20,
-                    "0"
-                ]
-            }
-            try:
-                json_data = json.dumps(data)
-                self.ws.send(data=json_data)
-            except:
-                print("error subscribe depath ")
-                raise Exception("error subscribe depath ")
+    def  subscribe_ticker(self):
+        # {"time": 123456, "channel": "futures.tickers", "event": "subscribe", "payload": ["BTC_USD"]}
+
+        data={
+            "channel": "futures.tickers",
+            "time": 1,
+            "event": "subscribe",
+            "payload": [settings.CONTRACT]
+        }
+        try:
+            json_data = json.dumps(data)
+            self.ws.send(data=json_data)
+        except:
+            print("error subscribe ticker ")
+            raise Exception("error subscribe ticker ")
+
+    def subscribe_trades(self):
+        data={
+            "channel": "futures.trades",
+            "time": 1,
+            "event": "subscribe",
+            "payload": [settings.CONTRACT]
+        }
+        try:
+            json_data = json.dumps(data)
+            self.ws.send(data=json_data)
+        except:
+            print("error subscribe trades ")
+            raise Exception("error subscribe trades ")
 
 
 
-    def get_depath(self,symbol):
-        # 为了将价格与数量按顺序排列
-        for k,v in self.data.items():
-            if k==symbol+"_depth.update":
-                return v
-        return []
+    def get_ticker(self):
+        channel="futures.tickers"
+        ticker=[]
+        if  channel in self.data:
+            ticker=self.data[channel] if self.data[channel] else []
+        return ticker
+
+    def get_trades(self):
+
+        channel="futures.trades"
+        trades=[]
+        if  channel in self.data:
+            trades=self.data[channel] if self.data[channel] else []
+        return trades
+
 
 
 if __name__ == "__main__":
@@ -159,20 +186,18 @@ if __name__ == "__main__":
     # add formatter to ch
     ch.setFormatter(formatter)
     logger.addHandler(ch)
-    ws = DCEXWebsocket()
+    ws = GateioWebsocket()
     ws.logger = logger
-    ws.connect("ws://47.56.8.19:19090")
+    ws.connect("wss://fx-ws-testnet.gateio.ws/v4/ws")
     while (ws.ws.sock.connected):
         data = {
-            "method": "depth.subscribe",
-            "id": 1516681176,
-            "params": [
-                "ICPDCA",
-                20,
-                "0"
-            ]
+            "channel": "futures.tickers",
+            "time": 1,
+            "event": "subscribe",
+            "payload": [settings.CONTRACT]
         }
         json_data = json.dumps(data)
         ws.ws.send(data=json_data)
         sleep(1)
+
 
