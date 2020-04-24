@@ -202,7 +202,7 @@ class OrderManager:
         """Create order items for use in convergence."""
         buy_orders = []
         sell_orders = []
-        for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
+        for i in reversed(range(0, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
             buy_orders.append(self.prepare_order(-i))
             sell_orders.append(self.prepare_order(i))
@@ -220,6 +220,8 @@ class OrderManager:
 
             quantity =round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
                             (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
+
+
         # 这是创造价格的策略
         price = self.get_price_offset(index)
 

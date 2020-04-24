@@ -10,7 +10,7 @@ from websocket import create_connection
 # websocket-apikey-auth-test.py
 #
 # Reference Python implementation for authorizing with websocket.
-# See https://www.bitmex.com/app/wsAPI for more details, including a list
+# See https://www.client.com/app/wsAPI for more details, including a list
 # of methods.
 ###
 

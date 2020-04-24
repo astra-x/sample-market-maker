@@ -46,7 +46,7 @@ class Client(object):
 
     def get_token(self, email, password):
         path = '/auth/email/login'
-        response = self._curl_bitmex(
+        response = self._curl_client(
             path=path,
             postdict={
                 "email": email,
@@ -61,7 +61,7 @@ class Client(object):
 
     def get_balace(self):
         path = '/spots/balance/query'
-        response = self._curl_bitmex(
+        response = self._curl_client(
             path=path,
             postdict={
                 "id": 1000000015,
@@ -88,13 +88,13 @@ class Client(object):
         if "market" not in order:
             order["market"] = self.client_symbol
         postdict = order
-        return self._curl_bitmex(path=path, postdict=postdict, verb="POST")
+        return self._curl_client(path=path, postdict=postdict, verb="POST")
 
     def http_open_orders(self, offset=0, limit=10):
         orders = []
         """Get open orders via HTTP. Used on close to ensure we catch them all."""
         path = '/spots/order/pending'
-        response = self._curl_bitmex(
+        response = self._curl_client(
             path=path,
             postdict={
                 "id": 1000000001,
@@ -109,7 +109,7 @@ class Client(object):
             total_order_num = response["result"]["total"]
             offset_amount = math.ceil(total_order_num / limit)
             for off in range(1, offset_amount):
-                response = self._curl_bitmex(
+                response = self._curl_client(
                     path=path,
                     postdict={
                         "id": 1000000001,
@@ -131,11 +131,11 @@ class Client(object):
             'order': orderid,
             'market': self.client_symbol
         }
-        return self._curl_bitmex(path=path, postdict=postdict, verb="POST")
+        return self._curl_client(path=path, postdict=postdict, verb="POST")
 
-    def _curl_bitmex(self, path, query=None, postdict=None, timeout=None, verb=None, rethrow_errors=False,
+    def _curl_client(self, path, query=None, postdict=None, timeout=None, verb=None, rethrow_errors=False,
                      max_retries=None):
-        """Send a request to BitMEX Servers."""
+        """Send a request to client Servers."""
         # Handle URL
         url = self.client_http_url + path
 
@@ -164,7 +164,7 @@ class Client(object):
             self.retries += 1
             if self.retries > max_retries:
                 raise Exception("Max retries on %s (%s) hit, raising." % (path, json.dumps(postdict or '')))
-            return self._curl_bitmex(path, query, postdict, timeout, verb, rethrow_errors, max_retries)
+            return self._curl_client(path, query, postdict, timeout, verb, rethrow_errors, max_retries)
 
         # Make the request
         response = ""
@@ -194,14 +194,14 @@ class Client(object):
                 if verb == 'DELETE':
                     self.logger.error("Order not found: %s" % postdict['orderID'])
                     return
-                self.logger.error("Unable to contact the BitMEX API (404). " +
+                self.logger.error("Unable to contact the client API (404). " +
                                   "Request: %s \n %s" % (url, json.dumps(postdict)))
                 exit_or_throw(e)
 
             # 429, ratelimit; cancel orders & wait until X-RateLimit-Reset
             elif response.status_code == 429:
                 self.logger.error("Ratelimited on current request. Sleeping, then trying again. Try fewer " +
-                                  "order pairs or contact support@bitmex.com to raise your limits. " +
+                                  "order pairs or contact support@client.com to raise your limits. " +
                                   "Request: %s \n %s" % (url, json.dumps(postdict)))
 
                 # Figure out how long we need to wait.
@@ -219,7 +219,7 @@ class Client(object):
                 # Retry the request.
                 return retry()
 
-            # 503 - BitMEX temporary downtime, likely due to a deploy. Try again
+            # 503 - client temporary downtime, likely due to a deploy. Try again
             elif response.status_code == 503:
 
                 time.sleep(3)
@@ -234,7 +234,7 @@ class Client(object):
                     orders = postdict['orders'] if 'orders' in postdict else postdict
 
                     IDs = json.dumps({'clOrdID': [order['clOrdID'] for order in orders]})
-                    orderResults = self._curl_bitmex('/order', query={'filter': IDs}, verb='GET')
+                    orderResults = self._curl_client('/order', query={'filter': IDs}, verb='GET')
 
                     for i, order in enumerate(orderResults):
                         if (
@@ -268,7 +268,7 @@ class Client(object):
                 return response
 
         except requests.exceptions.ProxyError as e:
-            self.logger.warning("Unable to contact the BitMEX API (%s). Please check the URL. Retrying. " +
+            self.logger.warning("Unable to contact the client API (%s). Please check the URL. Retrying. " +
                                 "Request: %s %s \n %s" % (e, url, json.dumps(postdict)))
             time.sleep(1)
             try:
@@ -277,7 +277,7 @@ class Client(object):
                 print("retry error")
                 return response
         except Exception as e:
-            print("_curl_bitmex  except Exception as e:",e)
+            print("_curl_client  except Exception as e:",e)
 
 
 

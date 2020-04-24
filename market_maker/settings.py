@@ -30,19 +30,19 @@ CONTRACT = "BTC_USD"
 
 ##url
 
-Client_HTTP_URL="http://47.97.125.121:3000"
-Client_WS_URL="ws://47.96.155.19:19090"
+Client_HTTP_URL="http://47.75.14.147:3000"
+Client_WS_URL="ws://47.56.8.19:19090"
 
 
 #order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE=False
 # 随机生成的quantitiy最大是多少
-MAX_ORDER_SIZE=1
+MAX_ORDER_SIZE=0.3
 # 随机生成的quantitiy最小是多少
 MIN_ORDER_SIZE=0.01
 
 # 基础数量最大
-ORDER_START_MAX_SIZE = 0.30
+ORDER_START_MAX_SIZE = 1
 # 基础数量最小
 ORDER_START_MIN_SIZE = 0.01
 
@@ -56,7 +56,7 @@ PRICE_MINIFICATION=10
 PRICE_INTERVAL = 0.05  #现在的
 
 # How many pairs of buy/sell orders to keep open
-ORDER_PAIRS = 10
+ORDER_PAIRS = 15
 
 # Client token ，可以不配置，可以根据账户密码实时更新生成
 ClientToken=""
@@ -67,7 +67,7 @@ Email="youtao.xing@icloud.com"
 Password="1234!abcd"
 
 # 交易品种
-ClientContract="ICPDCA"
+ClientContract="BTC/USDT"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime=10
 # 运行时间
@@ -77,7 +77,7 @@ RunTime=1000000000000000
 TIMEOUT = 7
 
 #基础计价方式，相当于人民币
-ClientSymbol="DCA"
+ClientSymbol="USDT"
 
 # 创建多个账户共同执行
 MarketMakers = [
@@ -86,11 +86,11 @@ MarketMakers = [
     {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr"},
     {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr"},
     {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr"},
-
-    {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 13, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
+#
+    # {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+    # {"CycleTime": 13, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+    # {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+    # {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
     #
     {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
     {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr"},
@@ -102,6 +102,9 @@ MarketMakers = [
     {"CycleTime": 31, "Email": "go_runzhang@163.com", "Password": "135246zr"},
     {"CycleTime": 33, "Email": "1263624209@qq.com", "Password": "135246zr"}
 ]
+
+
+
 
 
 

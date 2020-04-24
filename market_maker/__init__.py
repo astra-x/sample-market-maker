@@ -8,8 +8,8 @@ __version__ = 'v1.5'
 
 
 def run():
-    parser = argparse.ArgumentParser(description='sample BitMEX market maker')
-    parser.add_argument('command', nargs='?', help='Instrument symbol on BitMEX or "setup" for first-time config')
+    parser = argparse.ArgumentParser(description='sample  market maker')
+    parser.add_argument('command', nargs='?', help='Instrument symbol on  "setup" for first-time config')
     args = parser.parse_args()
 
     if args.command is not None and args.command.strip().lower() == 'setup':

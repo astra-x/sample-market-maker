@@ -39,7 +39,7 @@ sample-market-maker
     └── ws_thread_bak.py
 ```
 
-![MM流程图](/Users/run/Downloads/MM流程图.png)
+![MM流程图](./MM流程图.png)
 
 
 
