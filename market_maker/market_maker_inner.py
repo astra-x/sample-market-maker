@@ -173,7 +173,7 @@ class OrderManager:
         # Once exchange is created, register exit handler that will always cancel orders
         # on any error.
         atexit.register(self.exit)
-        signal.signal(signal.SIGTERM, self.exit)
+        signal.signal(signal.SIGCHLD, self.exit)
 
         self.reset()
 

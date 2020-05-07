@@ -43,7 +43,7 @@ if __name__=="__main__":
                 if not p.is_alive():
                     for mm in  settings.MarketMakers:
                        if mm["CycleTime"]==pname:
-                           p.close()
+                           p.terminate()
                            p = Process(target=run, args=(mm,))
                            p.start()
                            p_dic[mm["CycleTime"]] = p

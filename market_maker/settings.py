@@ -22,8 +22,8 @@ WATCHED_FILES = []
 GATEIO_URL = "wss://fx-ws-testnet.gateio.ws/v4/ws"
 
 
-SYMBOL = "btc"
-CONTRACT = "BTC_USD"
+SYMBOL = "eth"
+CONTRACT = "ETH_USD"
 
 
 # -----------------------------------Client  Setting-----------------------------------------
@@ -67,7 +67,7 @@ Email="youtao.xing@icloud.com"
 Password="1234!abcd"
 
 # 交易品种
-ClientContract="BTC/USDT"
+ClientContract="ETH/USDT"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime=10
 # 运行时间
