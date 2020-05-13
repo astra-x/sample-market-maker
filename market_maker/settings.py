@@ -13,13 +13,15 @@ LOG_LEVEL = logging.INFO
 # WATCHED_FILES = [os.path.join(Market_Maker_Dir,'market_maker_inner.py'), os.path.join(Market_Maker_Dir,'gateio.py'),\
 #                   os.path.join(Market_Maker_Dir,'settings.py')]
 
-WATCHED_FILES = []
+WATCHED_FILES = [os.path.join(Market_Maker_Dir,'settings.json')]
 
 
-# -----------------------------------GateIo  Setting---------------------------------------
+
+DryRun=True
+# -----------------------------------LocalPriceData  Setting---------------------------------------
 
 # API URL.
-GATEIO_URL = "wss://fx-ws-testnet.gateio.ws/v4/ws"
+LocalDataUrl = "http://127.0.0.1:5000/get_current_price"
 
 
 SYMBOL = "eth"
@@ -55,6 +57,14 @@ PRICE_MINIFICATION=10
 #价格间隔
 PRICE_INTERVAL = 0.05  #现在的
 
+
+# 价格区间设定的最大值
+MaxSetPrice=2000
+# 价格区间设定的最小值
+MinSetPrice=1000
+
+
+
 # How many pairs of buy/sell orders to keep open
 ORDER_PAIRS = 15
 
@@ -83,24 +93,24 @@ ClientSymbol="USDT"
 MarketMakers = [
     #创建3s周期的market-maker服务
     {"CycleTime": 3, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    # {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+    # {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+    # {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr"},
 #
     # {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
     # {"CycleTime": 13, "Email": "python_runzhang@163.com", "Password": "135246zr"},
     # {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr"},
     # {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
     #
-    {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 23, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 25, "Email": "1263624209@qq.com", "Password": "135246zr"},
-#     #
-    {"CycleTime": 27, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 29, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 31, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 33, "Email": "1263624209@qq.com", "Password": "135246zr"}
+#     {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+#     {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+#     {"CycleTime": 23, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+#     {"CycleTime": 25, "Email": "1263624209@qq.com", "Password": "135246zr"},
+# #     #
+#     {"CycleTime": 27, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
+#     {"CycleTime": 29, "Email": "python_runzhang@163.com", "Password": "135246zr"},
+#     {"CycleTime": 31, "Email": "go_runzhang@163.com", "Password": "135246zr"},
+#     {"CycleTime": 33, "Email": "1263624209@qq.com", "Password": "135246zr"}
 ]
 
 

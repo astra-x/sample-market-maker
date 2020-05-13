@@ -8,44 +8,40 @@ import requests
 import atexit
 import signal
 from market_maker import client
-from market_maker import gateio
+from market_maker import local_data
 from market_maker import settings
 from market_maker.utils import constants, errors, math
 from market_maker.utils.log import logger
 # Used for reloading the bot - saves modified times of key files
 import os
 
-watched_files_mtimes = [(f, getmtime(f)) for f in settings.WATCHED_FILES]
-
 
 # Helpers
 #
+watched_files_mtimes = [(f, getmtime(f)) for f in settings.WATCHED_FILES]
 
 
-class GateIoExchangeInterface:
+class LocalDataExchangeInterface:
     def __init__(self):
 
         if len(sys.argv) > 1:
             self.symbol = sys.argv[1]
         else:
             self.symbol = settings.SYMBOL
-        self.gateio = gateio.GateIo(base_url=settings.GATEIO_URL, symbol=self.symbol,
-                                    timeout=settings.TIMEOUT)
+        self.local_data = local_data.LocalData(base_url=settings.LocalDataUrl)
 
 
     def get_orders(self):
-        return self.gateio.ticker_data()
+        return self.local_data.ticker_data()
 
     def get_ticker(self):
 
-        return self.gateio.ticker_data()
+        return self.local_data.ticker_data()
 
     def is_open(self):
-        """Check that websockets are still open."""
-        return not self.gateio.ws.exited
+        """Check that local data are still open."""
+        return not self.local_data.exit()
 
-
-    
 
 
 class ClientExchangeInterface:
@@ -164,18 +160,18 @@ class ClientExchangeInterface:
 class OrderManager:
     def __init__(self,cycleTime,email,password):
 
-        self.CycleTime=cycleTime if cycleTime else  settings.CycleTime
-        self.email=email if email else settings.Email
-        self.password=password if password  else  settings.Password
-        time.sleep(self.CycleTime)  #这是为了两个目的，  一是不同时那么多请求去链接gateio websocket以免被禁用，二是不同时重置order
-        self.exchange = GateIoExchangeInterface()
-        self.exchange_client= ClientExchangeInterface(email=email,password=password)
+        self.CycleTime=cycleTime if cycleTime else settings.CycleTime
+        self.email= email if email else settings.Email
+        self.password=password if password else settings.Password
+        time.sleep(self.CycleTime)  #这是为了两个目的，  一是不同时那么多请求去链接local websocket以免被禁用，二是不同时重置order
+        self.exchange = LocalDataExchangeInterface()
+        self.exchange_client= ClientExchangeInterface(email=self.email,password=self.password)
         # Once exchange is created, register exit handler that will always cancel orders
         # on any error.
         atexit.register(self.exit)
         signal.signal(signal.SIGCHLD, self.exit)
 
-        self.reset()
+        # self.reset()
 
     def reset(self):
 
@@ -185,15 +181,20 @@ class OrderManager:
     def get_ticker(self):
         ticker = self.exchange.get_ticker()
         if ticker:
-            self.start_position = ticker[0]["mark_price"]
+            self.start_position = ticker["current_price"]
+            print("self.start_position--->:",self.start_position)
 
         return ticker
 
     def get_price_offset(self, index):
 
-        start_position = self.start_position
+        start_position_price = self.start_position
+
+        # 价格区间设定器：
+        start_position_price=math.range_price_verifier(start_position_price)
+
         # 这是创造价格的策略
-        return math.toNearest2(start_position,index)  #现在的
+        return math.toNearest2(start_position_price,index)  #现在的
 
     ###
     # Orders
@@ -206,10 +207,10 @@ class OrderManager:
             self.get_ticker()
             buy_orders.append(self.prepare_order(-i))
             sell_orders.append(self.prepare_order(i))
-        to_cancel = self.converge_orders(buy_orders, sell_orders)
+        self.converge_orders(buy_orders, sell_orders)
         time.sleep(self.CycleTime)
-        random.shuffle(to_cancel)
-        self.cancel_bulk_orders(to_cancel=to_cancel)
+        random.shuffle(self.orders_created)
+        self.cancel_bulk_orders(to_cancel=self.orders_created)
 
     def prepare_order(self, index):
         """Create an order object."""
@@ -237,16 +238,16 @@ class OrderManager:
 
     def converge_orders(self, buy_orders, sell_orders):
         to_create = []
-        orders_created = []
+        self.orders_created = []   #变为全局
         to_create.extend(buy_orders)
         to_create.extend(sell_orders)
         if len(to_create) > 0:
             # print("to_create:", to_create)
             random.shuffle(to_create)
             time.sleep(1)
-            orders_created = self.exchange_client.create_bulk_orders(to_create)
+            self.orders_created = self.exchange_client.create_bulk_orders(to_create)
 
-        return orders_created
+        return self.orders_created
 
     def cancel_bulk_orders(self, to_cancel):
         self.exchange_client.cancel_bulk_orders(orders=to_cancel)
@@ -255,6 +256,11 @@ class OrderManager:
     ###
     # Sanity
     ##
+    def check_file_change(self):
+        """Restart if any files we're watching have changed."""
+        for f, mtime in watched_files_mtimes:
+            if getmtime(f) > mtime:
+                self.exit()
 
     def sanity_check(self):
         """Perform checks before placing orders."""
@@ -269,11 +275,7 @@ class OrderManager:
     # Running
     ###
 
-    def check_file_change(self):
-        """Restart if any files we're watching have changed."""
-        for f, mtime in watched_files_mtimes:
-            if getmtime(f) > mtime:
-                self.restart()
+
 
     def check_connection(self):
         """Ensure the WS connections are still open."""
@@ -283,7 +285,7 @@ class OrderManager:
         logger.info("Shutting down. All open orders will be cancelled.")
         try:
             self.exchange_client.cancel_all_orders()
-            self.exchange.gateio.exit()
+            self.exchange.local_data.exit()
         except errors.AuthenticationError as e:
             logger.info("Was not authenticated; could not cancel orders.")
         except Exception as e:
@@ -307,8 +309,6 @@ class OrderManager:
     def run_loop(self):
         start_time = time.time()
         while True:
-            sys.stdout.write("-----\n")
-            sys.stdout.flush()
             self.check_file_change()
             sleep(self.CycleTime)
             # This will restart on very short downtime, but if it's longer,
