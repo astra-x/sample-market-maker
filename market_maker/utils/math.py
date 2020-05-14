@@ -10,13 +10,29 @@ def toNearest(num, tickSize):
     return float((Decimal(round(num / tickSize, 0)) * tickDec))
 
 
-def toNearest2(start_position,index):
-    start_position=round(float(start_position)/settings.PRICE_MINIFICATION,1)
+def toNearest2(start_position_price,index):
+    start_position_price=round(float(start_position_price)/settings.PRICE_MINIFICATION,1)
     if index < 0:
-        price = start_position + settings.PRICE_INTERVAL * (index + 1)
+        price = start_position_price + settings.PRICE_INTERVAL * (index + 1)
     else:
-        price = start_position + settings.PRICE_INTERVAL * index
+        price = start_position_price + settings.PRICE_INTERVAL * index
     return price
 
 
 
+
+def range_price_verifier(start_position_price):
+
+
+    if start_position_price>=settings.MaxSetPrice:
+        s=start_position_price-settings.MaxSetPrice
+        start_position_price=settings.MaxSetPrice-s
+
+    if start_position_price<=settings.MinSetPrice:
+        s=settings.MinSetPrice-start_position_price
+        start_position_price=settings.MinSetPrice+s
+
+    if not settings.MinSetPrice<start_position_price <settings.MaxSetPrice:
+        start_position_price=range_price_verifier(start_position_price)
+
+    return start_position_price
