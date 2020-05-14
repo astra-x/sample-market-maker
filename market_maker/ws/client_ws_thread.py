@@ -7,7 +7,7 @@ import ssl
 from time import sleep
 import json
 import logging
-from market_maker import settings
+from market_maker.settings import settings
 from market_maker.utils.log import setup_custom_logger
 
 from future.standard_library import hooks

@@ -1,5 +1,5 @@
 from decimal import Decimal
-from market_maker import settings
+from market_maker.settings import settings
 
 def toNearest(num, tickSize):
     """Given a number, round it to the nearest tick. Very useful for sussing float error
