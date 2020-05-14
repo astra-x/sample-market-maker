@@ -9,7 +9,7 @@ import atexit
 import signal
 from market_maker import client
 from market_maker import local_data
-from market_maker import settings
+from market_maker.settings import settings
 from market_maker.utils import constants, errors, math
 from market_maker.utils.log import logger
 # Used for reloading the bot - saves modified times of key files
@@ -158,7 +158,7 @@ class ClientExchangeInterface:
 
 
 class OrderManager:
-    def __init__(self,cycleTime,email,password):
+    def __init__(self,cycleTime,email,password,):
 
         self.CycleTime=cycleTime if cycleTime else settings.CycleTime
         self.email= email if email else settings.Email
@@ -170,6 +170,7 @@ class OrderManager:
         # on any error.
         atexit.register(self.exit)
         signal.signal(signal.SIGCHLD, self.exit)
+        self.Exit_Flag=False
 
         # self.reset()
 
@@ -309,7 +310,11 @@ class OrderManager:
     def run_loop(self):
         start_time = time.time()
         while True:
-            self.check_file_change()
+            # self.check_file_change()
+            if self.Exit_Flag==True:
+                print("-----------------子进程正在退出------------")
+                self.exit()
+
             sleep(self.CycleTime)
             # This will restart on very short downtime, but if it's longer,
             # the MM will crash entirely as it is unable to connect to the WS on boot.
