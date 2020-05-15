@@ -206,8 +206,14 @@ class OrderManager:
         sell_orders = []
         for i in reversed(range(0, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
-            buy_orders.append(self.prepare_order(-i))
-            sell_orders.append(self.prepare_order(i))
+            buy_order=self.prepare_order(-i)
+            sell_order=self.prepare_order(i)
+            if i==0:
+                quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE), 2)
+                buy_order["amount"]=str(quantity)
+                sell_order["amount"]=str(quantity)
+            buy_orders.append(buy_order)
+            sell_orders.append(sell_order)
         self.converge_orders(buy_orders, sell_orders)
         time.sleep(self.CycleTime)
         random.shuffle(self.orders_created)

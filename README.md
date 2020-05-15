@@ -110,11 +110,51 @@ pm2启动：
 
 ### 接口
 
-##### 1.设置MM价格浮动区间
+
+
+**1.启动MM**
+
+
+
+```json
+
+request:
+	url:/start                                method:post
+	body:
+
+ 
+  
+response:
+    {
+      "err_msg": "ok",
+      "err_code": 0
+    }
+	
+```
+
+##### 2.停止MM
 
 ```json
 request:
-	url:http://127.0.0.1:5000/reset_config                                 method:post
+	url:/stop                                 method:post
+	body:
+
+  
+response:
+    {
+      "err_msg": "ok",
+      "err_code": 0
+    }
+	
+
+
+```
+
+##### 3.设置MM价格浮动区间
+
+```json
+request:
+	url:/reset_config                                 method:post
 	body:
 	{
   "MaxSetPrice":2000,
