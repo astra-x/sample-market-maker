@@ -14,6 +14,8 @@ from market_maker.utils import constants, errors, math
 from market_maker.utils.log import logger
 # Used for reloading the bot - saves modified times of key files
 import os
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
+executor = ThreadPoolExecutor(max_workers=16)
 
 
 # Helpers
@@ -76,7 +78,7 @@ class ClientExchangeInterface:
         if self.dry_run:
             return
         orders = self.get_orders()
-        self.cancel_bulk_orders(orders)
+        self.quick_cancel_orders(orders)
 
     def get_orders(self):
         if self.dry_run:
@@ -99,16 +101,31 @@ class ClientExchangeInterface:
 
         return orders_created
 
-    def cancel_bulk_orders(self, orders):
+    def slow_cancel_orders(self, orders):
         if self.dry_run:
             return orders
         for order in orders:
             self.executive_info["cancel_order_num"] += 1
             time.sleep(1)
-
             response = self.client.cancel_order(orderid=order["id"])
             if "error" in response and response["error"] == None:
                 self.executive_info["cancel_order_ok_num"] += 1
+
+    def quick_cancel_orders(self,orders):
+
+        if self.dry_run:
+            return orders
+
+        all_task = [executor.submit(self._quick_cancel_orders_thread, (order)) for order in orders]
+        wait(all_task, return_when=ALL_COMPLETED)
+
+
+    def _quick_cancel_orders_thread(self,order):
+        self.executive_info["cancel_order_num"] += 1
+        response = self.client.cancel_order(orderid=order["id"])
+        if "error" in response and response["error"] == None:
+            self.executive_info["cancel_order_ok_num"] += 1
+
 
 
     def sell_all_assert(self):
@@ -257,7 +274,7 @@ class OrderManager:
         return self.orders_created
 
     def cancel_bulk_orders(self, to_cancel):
-        self.exchange_client.cancel_bulk_orders(orders=to_cancel)
+        self.exchange_client.slow_cancel_orders(orders=to_cancel)
 
 
     ###

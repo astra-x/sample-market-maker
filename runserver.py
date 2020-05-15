@@ -54,11 +54,11 @@ if __name__=="__main__":
         # 创建3s周期的market-maker服务
         {"CycleTime": 3, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd","STATUS":1}, #"STATUS":1代表活着
                                                                                                          #0代表死了
-        {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr","STATUS":1},
-
-        {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr","STATUS":1},
-
-        {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr","STATUS":1}
+        # {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr","STATUS":1},
+        #
+        # {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr","STATUS":1},
+        #
+        # {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr","STATUS":1}
 
     ]
 
