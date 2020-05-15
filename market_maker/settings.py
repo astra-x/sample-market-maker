@@ -32,7 +32,9 @@ class Setting():
 
         return self.setting_dic[item]
 
-with open("./settings.json","r",encoding="UTF-8") as f:
+
+settings_json_path=os.path.join(Market_Maker_Dir,"settings.json")
+with open(settings_json_path,"r",encoding="UTF-8") as f:
     setting_dic=json.load(f)
     print(setting_dic)
 
