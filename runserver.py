@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, os
 RootDir = os.path.dirname(os.path.abspath(__file__))
 Market_Maker_Dir = os.path.join(RootDir,"market_maker")
