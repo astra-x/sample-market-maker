@@ -45,6 +45,7 @@ def run(mm,a_dic):
 if __name__=="__main__":
     from multiprocessing import Process,Manager
     import threading
+    DRY_RUN=True
 
     MarketMakers = [
         # 创建3s周期的market-maker服务
@@ -56,19 +57,29 @@ if __name__=="__main__":
 
         {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr","STATUS":1}
 
-
     ]
 
     # #第一步：起服务，将参数传入MM进程里，对setting配置进行重置
     p_dic ={}
     manager = Manager()
     a_dic = manager.dict()
+    def check_is_DRY_RUN():
+        while True:
+            if not DRY_RUN:
+                for mm in MarketMakers:
+                    if mm["CycleTime"] in p_dic:
+                        continue
+                    # 这边开启子进程
+                    p=Process(target=run,args=(mm,a_dic,))
+                    p.start()
+                    p_dic[mm["CycleTime"]] = p
+            time.sleep(1)
 
-    for mm in MarketMakers:
-        # 这边开启子进程
-        p=Process(target=run,args=(mm,a_dic,))
-        p.start()
-        p_dic[mm["CycleTime"]] = p
+
+
+    t = threading.Thread(target=check_is_DRY_RUN)
+    t.daemon=True
+    t.start()
 
     # 开启线程去监视进程是否挂了，如果挂了就重启
     # -------------------------------------------------------
@@ -79,7 +90,7 @@ if __name__=="__main__":
             for pname,p in p_dic.items():
                 if not p.is_alive():
                     for mm in  MarketMakers:
-                       if mm["CycleTime"]==pname and  mm["STATUS"]:
+                       if mm["CycleTime"]==pname and  mm["STATUS"] and not DRY_RUN:
                            p = Process(target=run, args=(mm,a_dic,))
                            p.start()
                            p_dic[mm["CycleTime"]] = p
@@ -90,11 +101,11 @@ if __name__=="__main__":
                 running_mm_list.append(pname)
 
             #这是新增mm机器人
-            for mm in MarketMakers:
-                if mm["CycleTime"] not in running_mm_list and  mm["STATUS"]:
-                    p = Process(target=run, args=(mm,a_dic,))
-                    p.start()
-                    p_dic[mm["CycleTime"]] = p
+            # for mm in MarketMakers:
+            #     if mm["CycleTime"] not in running_mm_list and  mm["STATUS"] and not DRY_RUN:
+            #         p = Process(target=run, args=(mm,a_dic,))
+            #         p.start()
+            #         p_dic[mm["CycleTime"]] = p
 
             #todo 删减mm机器人
 
@@ -123,11 +134,29 @@ if __name__=="__main__":
         for pname in p_dic:
             a_dic[pname]=0
 
-
         return {"err_code":0,"err_msg":"ok"}
 
 
 
+    @app.route('/start',methods=["POST"])
+    def start():
+        global DRY_RUN
+        DRY_RUN = False
+
+
+        return {"err_code":0,"err_msg":"ok"}
+
+
+    @app.route('/stop', methods=["POST"])
+    def stop():
+        # 设置DRY_RUN为True
+        global DRY_RUN
+        DRY_RUN=True
+        # 将目前的task全停了
+        for pname in p_dic:
+            a_dic[pname]=0
+
+        return {"err_code": 0, "err_msg": "ok"}
 
 
 if __name__ == '__main__':
