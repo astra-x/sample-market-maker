@@ -125,13 +125,13 @@ if __name__=="__main__":
         data=request.json
         if data==None:
             return {"err_code":1,"err_msg":"配置参数未传"}
-        with open("settings.json", "r", encoding='utf-8')  as f:
+        with open("./settings.json", "r", encoding='utf-8')  as f:
             config = json.load(f)
             for k in data:
                 if k not in config:
                     return {"err_code":2,"err_msg":"配置参数有问题"}
             config.update(data)
-        with open("settings.json", "w", encoding='utf-8')  as f:
+        with open("./settings.json", "w", encoding='utf-8')  as f:
             json.dump(config, f)
         for pname in p_dic:
             a_dic[pname]=0

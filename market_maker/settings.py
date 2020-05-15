@@ -32,7 +32,7 @@ class Setting():
 
         return self.setting_dic[item]
 
-with open("settings.json","r",encoding="UTF-8") as f:
+with open("./settings.json","r",encoding="UTF-8") as f:
     setting_dic=json.load(f)
     print(setting_dic)
 
