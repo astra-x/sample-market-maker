@@ -51,7 +51,7 @@ def generate_next_data():
 
 
 
-current_price = 300
+current_price = 400
 
 file_cache={}
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     t2.daemon = True
     t2.start()
 
-    app.run(host='0.0.0.0',port=6003)
+    app.run(host='0.0.0.0',port=6004)
 
 
 
