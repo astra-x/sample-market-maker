@@ -67,7 +67,7 @@ Email="youtao.xing@icloud.com"
 Password="1234!abcd"
 
 # 交易品种
-ClientContract="BTC/USDT"
+ClientContract="BTC/KRWT"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime=10
 # 运行时间
@@ -77,7 +77,7 @@ RunTime=1000000000000000
 TIMEOUT = 7
 
 #基础计价方式，相当于人民币
-ClientSymbol="USDT"
+ClientSymbol="KRWT"
 
 # 创建多个账户共同执行
 MarketMakers = [
