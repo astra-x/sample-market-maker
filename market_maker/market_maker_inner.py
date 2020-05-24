@@ -262,16 +262,16 @@ class OrderManager:
 
     def converge_orders(self, buy_orders, sell_orders):
         to_create = []
-        self.orders_created = []   #变为全局
+        orders_created = []
         to_create.extend(buy_orders)
         to_create.extend(sell_orders)
         if len(to_create) > 0:
             # print("to_create:", to_create)
             random.shuffle(to_create)
             time.sleep(1)
-            self.orders_created = self.exchange_client.create_bulk_orders(to_create)
+            orders_created = self.exchange_client.create_bulk_orders(to_create)
 
-        return self.orders_created
+        return orders_created
 
     def cancel_bulk_orders(self, to_cancel):
         self.exchange_client.slow_cancel_orders(orders=to_cancel)

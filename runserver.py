@@ -67,9 +67,8 @@ if __name__=="__main__":
         {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
 
         {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr", "STATUS": 1},
-
-
-
+        #
+        #
         {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd", "STATUS": 1},  # "STATUS":1代表活着
         # 0代表死了
         {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
@@ -77,7 +76,7 @@ if __name__=="__main__":
         {"CycleTime": 23, "Email": "go_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
 
         {"CycleTime": 25, "Email": "1263624209@qq.com", "Password": "135246zr", "STATUS": 1},
-
+        #
         {"CycleTime": 27, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd", "STATUS": 1},  # "STATUS":1代表活着
         # 0代表死了
         {"CycleTime": 29, "Email": "python_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
@@ -194,4 +193,4 @@ if __name__=="__main__":
 if __name__ == '__main__':
 
 
-    app.run(host='0.0.0.0',port=5000)
+    app.run(host='0.0.0.0',port=5001)

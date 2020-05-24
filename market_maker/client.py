@@ -171,7 +171,7 @@ class Client(object):
 
         try:
 
-
+            # print("url:{}---->postdict:{}".format(url,postdict))
             response = requests.request(verb, url, json=postdict, headers=header, params=query)
             # prepped = self.session.prepare_request(req)
 
