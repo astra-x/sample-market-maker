@@ -7,7 +7,7 @@ if not os.path.exists(DataDir):
     os.mkdir(DataDir)
 
 
-S0=3000
+S0=100
 
 R=0.05
 
