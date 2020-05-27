@@ -285,5 +285,10 @@ class Client(object):
         self.retries = 0
 
         if response:
-            response=response.json()
+            try:
+                response=response.json()
+            except  Exception as e:
+                print("response--error------>",e)
+                response=None
+
         return response
