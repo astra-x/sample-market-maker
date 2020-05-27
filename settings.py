@@ -7,7 +7,7 @@ DataDir=os.path.join(RootDir,"data")
 if not os.path.exists(DataDir):
     os.mkdir(DataDir)
 
-S0=3000
+S0=200
 
 R=0.05
 

@@ -51,7 +51,7 @@ def generate_next_data():
 
 
 
-current_price = 200
+current_price = settings.S0
 
 file_cache={}
 
