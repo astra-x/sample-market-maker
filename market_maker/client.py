@@ -289,6 +289,7 @@ class Client(object):
                 response=response.json()
             except  Exception as e:
                 print("response--error------>",e)
-                response=None
+                response=""
+        print("url------>:{},response-------->:{},postdict----->:{}".format(url,response,postdict))
 
         return response

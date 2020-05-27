@@ -86,7 +86,6 @@ class GateioWebsocket():
     def __on_message(self, message):
         '''Handler for parsing WS messages.'''
         message = json.loads(message)
-        print("message-------------------->>>:",message)
         channel = message['channel'] if 'channel' in message else None
         event = message['event'] if 'event' in message else None
         if event=="subscribe":
