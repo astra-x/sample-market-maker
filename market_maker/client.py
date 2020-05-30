@@ -283,7 +283,7 @@ class Client(object):
 
         # Reset retry counter on success
         self.retries = 0
-        print("url:{},------->response:{},---->postdict:{}".format(url, response.json(),postdict))
         if response:
             response=response.json()
+            print("url:{},------->response:{},---->postdict:{}".format(url, response, postdict))
         return response
