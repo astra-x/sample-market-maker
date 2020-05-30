@@ -231,10 +231,10 @@ class OrderManager:
                 sell_order["amount"]=str(quantity)
             buy_orders.append(buy_order)
             sell_orders.append(sell_order)
-        self.converge_orders(buy_orders, sell_orders)
+        orders_created=self.converge_orders(buy_orders, sell_orders)
         time.sleep(self.CycleTime)
-        random.shuffle(self.orders_created)
-        self.cancel_bulk_orders(to_cancel=self.orders_created)
+        random.shuffle(orders_created)
+        self.cancel_bulk_orders(to_cancel=orders_created)
 
     def prepare_order(self, index):
         """Create an order object."""
