@@ -7,7 +7,7 @@ plt.style.use('ggplot')
 mpl.rcParams['figure.figsize']= [15, 9]
 
 
-S = np.load("./data/1589007669-1591599669.npy")
+S = np.load("./data/1590832874-1593424874.npy")
 
 plt.plot(S[:, :1], lw=1.5)
 plt.xlabel('time')
