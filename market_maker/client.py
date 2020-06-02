@@ -8,6 +8,8 @@ import logging
 import math
 from market_maker.ws.client_ws_thread import ClientWebsocket
 
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
+executor = ThreadPoolExecutor(max_workers=16)
 
 class Client(object):
     """Client API Connector."""
@@ -121,6 +123,9 @@ class Client(object):
                 )
                 if "result" in response and response["result"]:
                     orders.extend(response["result"]["records"])
+                # self.quick_cancel_orders(orders=orders)
+                # orders.clear()
+
         return orders
 
     def cancel_order(self, orderid):
@@ -132,6 +137,20 @@ class Client(object):
             'market': self.client_symbol
         }
         return self._curl_client(path=path, postdict=postdict, verb="POST")
+
+
+    def quick_cancel_orders(self,orders):
+
+        all_task = [executor.submit(self._quick_cancel_orders_thread, (order)) for order in orders]
+        wait(all_task, return_when=ALL_COMPLETED)
+
+
+    def _quick_cancel_orders_thread(self,order):
+
+        response = self.cancel_order(orderid=order["id"])
+        if "error" in response and response["error"] == None:
+            pass
+
 
     def _curl_client(self, path, query=None, postdict=None, timeout=None, verb=None, rethrow_errors=False,
                      max_retries=None):
