@@ -64,7 +64,7 @@ class GateioWebsocket():
 
         setup_custom_logger('websocket', log_level=settings.LOG_LEVEL)
         self.wst = threading.Thread(
-            target=lambda: self.ws.run_forever())
+            target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}))
         self.wst.daemon = True
         self.wst.start()
         self.logger.info("Started thread")
