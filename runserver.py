@@ -52,34 +52,43 @@ if __name__=="__main__":
 
     MarketMakers = [
         # 创建3s周期的market-maker服务
-        {"CycleTime": 3, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd","STATUS":1}, #"STATUS":1代表活着
+        {"CycleTime": 3, "Email": "fsc_yuhu01@163.com", "Password": "123456yuhu","STATUS":1}, #"STATUS":1代表活着
                                                                                                          #0代表死了
-        {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr","STATUS":1},
+        {"CycleTime": 5, "Email":"fsc_yuhu02@163.com", "Password": "123456yuhu","STATUS":1},
 
-        {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr","STATUS":1},
+        {"CycleTime": 7, "Email": "fsc_yuhu03@163.com", "Password": "123456yuhu","STATUS":1},
 
-        {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr","STATUS":1},
-        {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd", "STATUS": 1},  # "STATUS":1代表活着
+
+
+        {"CycleTime": 9, "Email": "fsc_yuhu01@163.com", "Password": "123456yuhu", "STATUS": 1},  # "STATUS":1代表活着
         # 0代表死了
-        {"CycleTime": 13, "Email": "python_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
+        {"CycleTime": 11, "Email": "fsc_yuhu02@163.com", "Password": "123456yuhu", "STATUS": 1},
 
-        {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
+        {"CycleTime": 13, "Email": "fsc_yuhu03@163.com", "Password": "123456yuhu", "STATUS": 1},
 
-        {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr", "STATUS": 1},
-        {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd", "STATUS": 1},  # "STATUS":1代表活着
+
+
+        {"CycleTime": 15, "Email": "fsc_yuhu01@163.com", "Password": "123456yuhu", "STATUS": 1},  # "STATUS":1代表活着
         # 0代表死了
-        {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
+        {"CycleTime": 17, "Email": "fsc_yuhu02@163.com", "Password": "123456yuhu", "STATUS": 1},
 
-        {"CycleTime": 23, "Email": "go_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
+        {"CycleTime": 19, "Email": "fsc_yuhu03@163.com", "Password": "123456yuhu", "STATUS": 1},
 
-        {"CycleTime": 25, "Email": "1263624209@qq.com", "Password": "135246zr", "STATUS": 1},
-        {"CycleTime": 27, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd", "STATUS": 1},  # "STATUS":1代表活着
+
+
+        {"CycleTime": 21, "Email": "fsc_yuhu01@163.com", "Password": "123456yuhu", "STATUS": 1},  # "STATUS":1代表活着
         # 0代表死了
-        {"CycleTime": 29, "Email": "python_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
+        {"CycleTime": 23, "Email": "fsc_yuhu02@163.com", "Password": "123456yuhu", "STATUS": 1},
 
-        {"CycleTime": 31, "Email": "go_runzhang@163.com", "Password": "135246zr", "STATUS": 1},
+        {"CycleTime": 25, "Email": "fsc_yuhu03@163.com", "Password": "123456yuhu", "STATUS": 1},
 
-        {"CycleTime": 33, "Email": "1263624209@qq.com", "Password": "135246zr", "STATUS": 1}
+
+
+        {"CycleTime": 27, "Email": "fsc_yuhu01@163.com", "Password": "123456yuhu", "STATUS": 1},  # "STATUS":1代表活着
+        # 0代表死了
+        {"CycleTime": 29, "Email": "fsc_yuhu02@163.com", "Password": "123456yuhu", "STATUS": 1},
+
+        {"CycleTime": 31, "Email": "fsc_yuhu03@163.com", "Password": "123456yuhu", "STATUS": 1},
 
     ]
 
