@@ -82,25 +82,25 @@ ClientSymbol="USDT"
 # 创建多个账户共同执行
 MarketMakers = [
     #创建3s周期的market-maker服务
-    {"CycleTime": 3, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 5, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 7, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 9, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    {"CycleTime": 3, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 5, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 7, "Email":"eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 9, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
 #
-    # {"CycleTime": 11, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    # {"CycleTime": 13, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    # {"CycleTime": 15, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    # {"CycleTime": 17, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    {"CycleTime": 11, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 13, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 15, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 17, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
     #
-    {"CycleTime": 19, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 21, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 23, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 25, "Email": "1263624209@qq.com", "Password": "135246zr"},
+    {"CycleTime": 19, "Email":"eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 21, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 23, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 25, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
 #     #
-    {"CycleTime": 27, "Email": "youtao.xing@icloud.com", "Password": "1234!abcd"},
-    {"CycleTime": 29, "Email": "python_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 31, "Email": "go_runzhang@163.com", "Password": "135246zr"},
-    {"CycleTime": 33, "Email": "1263624209@qq.com", "Password": "135246zr"}
+    {"CycleTime": 27, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 29, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 31, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 33, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"}
 ]
 
 
