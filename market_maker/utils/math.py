@@ -11,7 +11,7 @@ def toNearest(num, tickSize):
 
 
 def toNearest2(start_position,index):
-    start_position=round(float(start_position)/settings.PRICE_MINIFICATION,1)
+    start_position=round(float(start_position)/settings.PRICE_MINIFICATION,3)
     if index < 0:
         price = start_position + settings.PRICE_INTERVAL * (index + 1)
     else:

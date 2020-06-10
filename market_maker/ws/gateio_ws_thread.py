@@ -164,6 +164,7 @@ class GateioWebsocket():
         ticker=[]
         if  channel in self.data:
             ticker=self.data[channel] if self.data[channel] else []
+        # print("---------trades:", ticker)
         return ticker
 
     def get_trades(self):
@@ -172,6 +173,7 @@ class GateioWebsocket():
         trades=[]
         if  channel in self.data:
             trades=self.data[channel] if self.data[channel] else []
+
         return trades
 
 
