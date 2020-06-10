@@ -83,24 +83,24 @@ ClientSymbol="USDT"
 MarketMakers = [
     #创建3s周期的market-maker服务
     {"CycleTime": 3, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 5, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 7, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 9, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
-# #
-#     {"CycleTime": 11, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 13, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 15, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 17, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 5, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 7, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 9, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
+#
+    {"CycleTime": 11, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 13, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 15, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 17, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
+    #
+    {"CycleTime": 19, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 21, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 23, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 25, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
 #     #
-#     {"CycleTime": 19, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 21, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 23, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 25, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
-# #     #
-#     {"CycleTime": 27, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 29, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 31, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
-#     {"CycleTime": 33, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 27, "Email": "eos_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 29, "Email": "eos_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 31, "Email": "eos_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 33, "Email": "eos_yuhu04@163.com", "Password": "123456yuhu"},
 ]
 
 
