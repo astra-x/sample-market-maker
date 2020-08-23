@@ -185,7 +185,7 @@ class OrderManager:
     def get_ticker(self):
         ticker = self.exchange.get_ticker()
         if ticker:
-            self.start_position = ticker[0]["mark_price"]
+            self.start_position = ticker[0]["index_price"]
 
         return ticker
 
