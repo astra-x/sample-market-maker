@@ -6,17 +6,15 @@ import datetime
 import json
 import logging
 import math
-from market_maker.ws.client_ws_thread import ClientWebsocket
 
 
 class Client(object):
     """Client API Connector."""
 
-    def __init__(self, client_ws_url=None, client_http_url=None, symbol=None, token=None,
+    def __init__(self, client_http_url=None, symbol=None, token=None,
                  email=None, password=None, timeout=7):
         """Init connector."""
         self.logger = logging.getLogger('root')
-        self.client_ws_url = client_ws_url
         self.client_http_url = client_http_url
         self.token = token
         self.client_symbol = symbol
@@ -25,8 +23,6 @@ class Client(object):
         self.timeout = timeout
         self.email = email
         self.password = password
-        self.ws = ClientWebsocket()
-        self.ws.connect(endpoint=client_ws_url, symbol=symbol)
         self.update_token()
 
     # Public methods
@@ -170,16 +166,10 @@ class Client(object):
         response = ""
 
         try:
-
-            # print("url:{}---->postdict:{}".format(url,postdict))
             response = requests.request(verb, url, json=postdict, headers=header, params=query)
             # prepped = self.session.prepare_request(req)
-
             response.raise_for_status()
-
         except requests.exceptions.HTTPError as e:
-
-
             # 401 - Auth error. This is fatal.
             if response.status_code == 401:
                 self.logger.error("API Key or Secret incorrect, please check and restart.")
@@ -211,7 +201,6 @@ class Client(object):
 
                 # We're ratelimited, and we may be waiting for a long time. Cancel orders.
                 self.logger.warning("Canceling all known orders in the meantime.")
-                self.cancel([o['orderID'] for o in self.open_orders()])
 
                 self.logger.error("Your ratelimit will reset at %s. Sleeping for %d seconds." % (reset_str, to_sleep))
                 time.sleep(to_sleep)
@@ -221,14 +210,12 @@ class Client(object):
 
             # 503 - client temporary downtime, likely due to a deploy. Try again
             elif response.status_code == 503:
-
                 time.sleep(3)
                 return retry()
 
             elif response.status_code == 400:
                 error = response.json()['error']
                 message = error['message'].lower() if error else ''
-
                 # Duplicate clOrdID: that's fine, probably a deploy, go get the order(s) and return it
                 if 'duplicate clordid' in message:
                     orders = postdict['orders'] if 'orders' in postdict else postdict
@@ -278,8 +265,6 @@ class Client(object):
                 return response
         except Exception as e:
             print("_curl_client  except Exception as e:",e)
-
-
 
         # Reset retry counter on success
         self.retries = 0

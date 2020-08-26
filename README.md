@@ -1,183 +1,76 @@
-###  Sample Market Maker
-
-该服务根据bitmex[https://github.com/Behappy123/market-maker]提供的做市商机器人结构改造而成。
-
-### 介绍
+项目说明
 
 ```
-sample-market-maker
-├── README.md   #说明文件
-├── runserver.py #启动文件，创建多个服务
-├── market_maker 
-│   ├── __init__.py
-│   ├── auth    #认证服务，目前没有用上
-│   │   ├── APIKeyAuth.py
-│   │   ├── APIKeyAuthWithExpires.py
-│   │   ├── AccessTokenAuth.py
-│   │   ├── __init__.py
-│   ├── client.py  #需要服务的交易所（hudex）相关文件
-│   ├── gateio.py  #提供原始数据服务的相关文件
-│   ├── market_maker_inner.py #创建order服务文件
-│   ├── settings.py           #配置文件
-│   ├── utils
-│   │   ├── __init__.py
-│   │   ├── constants.py      
-│   │   ├── dotdict.py
-│   │   ├── errors.py
-│   │   ├── log.py
-│   │   └── math.py     #价格策略工具
-│   └── ws
-│       ├── __init__.py
-│       ├── client_ws_thread.py  #需要服务的交易所（hudex）client端websocket
-│       └── gateio_ws_thread.py  #提供原始数据服务的client端websocketket
-├── requirements.txt             #包依赖文件
-└── test    #测试相关文件夹
-    ├── test_gateio.py          
-    ├── test_quantity.py
-    ├── websocket-apikey-auth-test.py
-    ├── websocket-multiplexing-test.py
-    └── ws_thread_bak.py
+ HUDEX-BRUSH-MM 该服务是提供刷成交量的服务机器人，
+
 ```
 
-![MM流程图](./MM流程图.png)
-
-
-
-GateIo 相关模块提供交易市场原始数据，client相关模块对原始数据再加工，创建属于自己的订单，将创建好的订单发往需要此服务的交易所（比如hudex）后端。
-
-### 极速体验
-
-##### 环境安装：
-
-1.python版本：python3.7.7    其它python3版本亦可
-
-2.包安装：切换到Sample Market Maker目录下，执行pip3 install -r requirements.txt
-
-3.pm2:管理该服务的进程管理工具
+快速开始
 
 ```python
-#pm2安装：
-	npm install -g pm2
-#pm2启动服务：
-	pm2 start run server.py --name market-maker --interpreter python3
-#pm2停止服务：
-	pm2 stop market-maker
-#pm2使用说明：
-	[https://www.jianshu.com/p/e15fd72727fe]
+ # 注意点
+ 1.需要确保runserver.py文件中登陆账户是有费用的
+ # 启动
+  简单启动：python runserver.py
+  pm2启动：pm2 start runserver.py --name HUDEX-BRUSH-MM-SDC/USDT --interpreter python3 
 ```
 
-##### 配置文件：
 
-配置文件在market_maker目录下settings.py文件中，每个配置项有注释说明，可以根据注释去配置。
 
-配置项MarketMakers说明：
+配置说明
+
+```
+{
+    "ClientContract": "SDC/USDT",# 交易对
+    "Client_HTTP_URL": "http://47.75.14.147:3000", # 客户端地址
+    "CycleTime": 1, # 表示1秒执行多少次
+    "HighFrequency": 10, # 频率上限
+    "LowFrequency": 2, # 频率下限
+    "MaxSetPrice": 1, # 价格上限
+    "MinSetPrice": 0, # 价格下限
+    "OrderMaxQuantity": 0.02, # 订单最大数量
+    "OrderMinQuantity": 0.01, # 订单最小数量
+    "StartTime": "2020-08-26 10:58:48", # 开始时间
+    "EndTime": "2020-08-26 13:58:48", # 结束时间
+    "TIMEOUT": 7 # 超时时间
+}
+```
+
+接口说明
 
 ```python
 
-MarketMakers = [
-		#以子进程的方式创建3s周期的market-maker服务
-    {"CycleTime": 3, "Email": "youtao.xin.com", "Password": "12abcd"},
-  	#创建5s周期的market-maker服务
-    {"CycleTime": 5, "Email": "python_runzg@163.com", "Password": "1352zr"},
-]
+# 重置配置文件接口
+url: /reset_config
+method: POST 
+body:
+    {
+        "ClientContract": "SDC/USDT",
+        "Client_HTTP_URL": "http://47.75.14.147:3000",
+        "CycleTime": 1,
+        "EndTime": "2020-08-26 13:58:48",
+        "HighFrequency": 10,
+        "LowFrequency": 2,
+        "MaxSetPrice": 1,
+        "MinSetPrice": 0,
+        "OrderMaxQuantity": 0.02,
+        "OrderMinQuantity": 0.01,
+        "StartTime": "2020-08-26 10:58:48",
+        "TIMEOUT": 7
+    }
 
-```
+# 获取配置文件接口
+url: /get_config
+method: GET
+  
+# 开启服务接口
+url: /start
+method: POST
 
-
-
-##### 启动：
-
-直接启动：
-
-```python
-第一步：切换到Sample Market Maker目录下，
-
-第二步：python3 runserver.py
-```
-
-pm2启动：
-
-```python
-第一步：切换到Sample Market Maker目录下
-
-第二步：pm2 start runserver.py --name market-maker --interpreter python3
-
-```
-
-
-
+# 暂停服务接口
+url: /stop
+method: POST
  
 
-### 接口
-
-
-
-**1.启动MM**
-
-
-
-```json
-
-request:
-	url:/start                                method:post
-	body:
-
- 
-  
-response:
-    {
-      "err_msg": "ok",
-      "err_code": 0
-    }
-	
 ```
-
-##### 2.停止MM
-
-```json
-request:
-	url:/stop                                 method:post
-	body:
-
-  
-response:
-    {
-      "err_msg": "ok",
-      "err_code": 0
-    }
-	
-
-
-```
-
-##### 3.设置MM价格浮动区间
-
-```json
-request:
-	url:/reset_config                                 method:post
-	body:
-	{
-  "MaxSetPrice":2000,
-  "MinSetPrice":1000
-  }
-  
-  
-response:
-    {
-      "err_msg": "ok",
-      "err_code": 0
-    }
-	
-
-```
-
-
-
-​		
-
-
-
-
-
-
 

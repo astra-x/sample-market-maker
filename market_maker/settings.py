@@ -15,13 +15,8 @@ LOG_LEVEL = logging.INFO
 
 WATCHED_FILES = []
 
-
-
 DryRun=True
 # -----------------------------------LocalPriceData  Setting---------------------------------------
-
-
-
 
 class Setting():
     def __init__(self,setting_dic):

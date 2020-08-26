@@ -1,4 +1,0 @@
-requests==2.23.0
-Flask==1.1.2
-future==0.18.2
-websocket_client==0.57.0
