@@ -161,7 +161,7 @@ if __name__ == "__main__":
     logger.addHandler(ch)
     ws = ClientWebsocket()
     ws.logger = logger
-    ws.connect("ws://47.56.8.19:19090")
+    ws.connect("ws://18.183.178.183:19090")
     while (ws.ws.sock.connected):
         data = {
             "method": "depth.subscribe",
