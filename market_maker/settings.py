@@ -32,26 +32,24 @@ Client_WS_URL = "ws://18.183.178.183:19090"
 # order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE = False
 # 随机生成的quantitiy最大是多少
-MAX_ORDER_SIZE = 0.3
+MAX_ORDER_SIZE = 0.05
 # 随机生成的quantitiy最小是多少
 MIN_ORDER_SIZE = 0.01
 
 # 基础数量最大
-ORDER_START_MAX_SIZE = 1
+ORDER_START_MAX_SIZE = 0.05
 # 基础数量最小
 ORDER_START_MIN_SIZE = 0.01
 
 # 数量间隔
 ORDER_STEP_SIZE = 0.01
 
-# 成交量放大倍速
-VOLUME_MINIFICATION = 4
 
 # 价格缩放倍数
 PRICE_MINIFICATION = 1
 
 # 价格间隔
-PRICE_INTERVAL = 0.05  # 现在的
+PRICE_INTERVAL = 0.05
 
 # How many pairs of buy/sell orders to keep open
 ORDER_PAIRS = 15

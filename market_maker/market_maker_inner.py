@@ -197,19 +197,13 @@ class OrderManager:
         """Create order items for use in convergence."""
         buy_orders = []
         sell_orders = []
-        for i in reversed(range(0, settings.ORDER_PAIRS + 1)):
+        for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
             buy_order = self.prepare_order(-i)
             sell_order = self.prepare_order(i)
-            if i == 0:
-                quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE)/settings.VOLUME_MINIFICATION, 2)
-                buy_order["amount"] = str(quantity)
-                sell_order["amount"] = str(quantity)
-                buy_orders.append(buy_order)
-                sell_orders.append(sell_order)
-            else:
-                buy_orders.append(buy_order)
-                sell_orders.append(sell_order)
+            buy_orders.append(buy_order)
+            sell_orders.append(sell_order)
+
         orders_created = self.converge_orders(buy_orders, sell_orders)
         time.sleep(self.CycleTime)
         random.shuffle(orders_created)
