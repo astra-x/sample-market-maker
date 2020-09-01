@@ -32,7 +32,6 @@ class GateIoExchangeInterface:
         self.gateio = gateio.GateIo(base_url=settings.GATEIO_URL, symbol=self.symbol,
                                     timeout=settings.TIMEOUT)
 
-
     def get_orders(self):
         return self.gateio.ticker_data()
 
@@ -45,22 +44,19 @@ class GateIoExchangeInterface:
         return not self.gateio.ws.exited
 
 
-    
-
-
 class ClientExchangeInterface:
-    def __init__(self, email,password,dry_run=False):
-        self.email=email
-        self.password=password
+    def __init__(self, email, password, dry_run=False):
+        self.email = email
+        self.password = password
         self.dry_run = dry_run
         if len(sys.argv) > 1:
             self.symbol = sys.argv[1]
         else:
             self.symbol = settings.ClientContract
         self.client = client.Client(client_ws_url=settings.Client_WS_URL, client_http_url=settings.Client_HTTP_URL,
-                                  symbol=self.symbol,
-                                  email=self.email, password=self.password,
-                                  timeout=settings.TIMEOUT)
+                                    symbol=self.symbol,
+                                    email=self.email, password=self.password,
+                                    timeout=settings.TIMEOUT)
         self.executive_info = {"create_order_num": 0,
                                "create_order_ok_num": 0,
                                "cancel_order_num": 0,
@@ -114,13 +110,12 @@ class ClientExchangeInterface:
             if "error" in response and response["error"] == None:
                 self.executive_info["cancel_order_ok_num"] += 1
 
-
     def sell_all_assert(self):
         # 取消所有委托订单
         self.cancel_all_orders()
         # 获取账户资产情况
         balace = self.client.get_balace()
-        if settings.ClientSymbol and  settings.ClientSymbol in balace:
+        if settings.ClientSymbol and settings.ClientSymbol in balace:
             for k, v in balace.items():
                 if k != settings.ClientSymbol:
                     symbol = k + settings.ClientSymbol
@@ -162,14 +157,14 @@ class ClientExchangeInterface:
 
 
 class OrderManager:
-    def __init__(self,cycleTime,email,password):
+    def __init__(self, cycleTime, email, password):
 
-        self.CycleTime=cycleTime if cycleTime else  settings.CycleTime
-        self.email=email if email else settings.Email
-        self.password=password if password  else  settings.Password
-        time.sleep(self.CycleTime)  #这是为了两个目的，  一是不同时那么多请求去链接gateio websocket以免被禁用，二是不同时重置order
+        self.CycleTime = cycleTime if cycleTime else settings.CycleTime
+        self.email = email if email else settings.Email
+        self.password = password if password else settings.Password
+        time.sleep(self.CycleTime)  # 这是为了两个目的，  一是不同时那么多请求去链接gateio websocket以免被禁用，二是不同时重置order
         self.exchange = GateIoExchangeInterface()
-        self.exchange_client= ClientExchangeInterface(email=email,password=password)
+        self.exchange_client = ClientExchangeInterface(email=email, password=password)
         # Once exchange is created, register exit handler that will always cancel orders
         # on any error.
         atexit.register(self.exit)
@@ -193,7 +188,7 @@ class OrderManager:
 
         start_position = self.start_position
         # 这是创造价格的策略
-        return math.toNearest2(start_position,index)  #现在的
+        return math.toNearest2(start_position, index)  # 现在的
 
     ###
     # Orders
@@ -204,15 +199,18 @@ class OrderManager:
         sell_orders = []
         for i in reversed(range(0, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
-            buy_order=self.prepare_order(-i)
-            sell_order=self.prepare_order(i)
-            if i==0:
-                quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE), 2)
-                buy_order["amount"]=str(quantity)
-                sell_order["amount"]=str(quantity)
-            buy_orders.append(buy_order)
-            sell_orders.append(sell_order)
-        orders_created=self.converge_orders(buy_orders, sell_orders)
+            buy_order = self.prepare_order(-i)
+            sell_order = self.prepare_order(i)
+            if i == 0:
+                quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE)/settings.VOLUME_MINIFICATION, 2)
+                buy_order["amount"] = str(quantity)
+                sell_order["amount"] = str(quantity)
+                buy_orders.append(buy_order)
+                sell_orders.append(sell_order)
+            else:
+                buy_orders.append(buy_order)
+                sell_orders.append(sell_order)
+        orders_created = self.converge_orders(buy_orders, sell_orders)
         time.sleep(self.CycleTime)
         random.shuffle(orders_created)
         self.cancel_bulk_orders(to_cancel=orders_created)
@@ -224,9 +222,8 @@ class OrderManager:
             quantity = random.randint(settings.MIN_ORDER_SIZE, settings.MAX_ORDER_SIZE)
         else:
 
-            quantity =round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
-                            (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
-
+            quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
+                             (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
 
         # 这是创造价格的策略
         price = self.get_price_offset(index)
@@ -257,7 +254,6 @@ class OrderManager:
     def cancel_bulk_orders(self, to_cancel):
         self.exchange_client.cancel_bulk_orders(orders=to_cancel)
 
-
     ###
     # Sanity
     ##
@@ -271,6 +267,7 @@ class OrderManager:
         ticker = self.get_ticker()
         if not ticker:
             self.exit()
+
     ###
     # Running
     ###
@@ -320,7 +317,6 @@ class OrderManager:
             # This will restart on very short downtime, but if it's longer,
             # the MM will crash entirely as it is unable to connect to the WS on boot.
             if not self.check_connection():
-
                 logger.error("Realtime data connection unexpectedly closed, restarting.")
 
                 return
@@ -329,7 +325,7 @@ class OrderManager:
                 self.exchange_client.client.update_token()
                 self.place_orders()  # Creates desired orders and converges to existing orders
             except Exception as e:
-                print("run_loop Exception as e:",e)
+                print("run_loop Exception as e:", e)
                 continue
 
             now_time = time.time()
@@ -340,12 +336,9 @@ class OrderManager:
                 break
 
     def restart(self):
-        
+
         logger.info("Restarting the market maker...")
         os.execv(sys.executable, [sys.executable] + sys.argv)
 
-
 #
 #
-
-
