@@ -217,7 +217,7 @@ class OrderManager:
         """Create an order object."""
         # 这是创造数量的策略
         quantity =round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
-                        (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
+                        (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 4)
         # 这是创造价格的策略
         price = self.get_price_offset(index)
 
