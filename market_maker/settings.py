@@ -31,18 +31,14 @@ Client_WS_URL = "ws://18.183.178.183:19090"
 
 # order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE = False
-# 随机生成的quantitiy最大是多少
-MAX_ORDER_SIZE = 2
-# 随机生成的quantitiy最小是多少
-MIN_ORDER_SIZE = 0.01
 
 # 基础数量最大
-ORDER_START_MAX_SIZE = 2
+ORDER_START_MAX_SIZE = 10
 # 基础数量最小
 ORDER_START_MIN_SIZE = 0.01
 
 # 数量间隔
-ORDER_STEP_SIZE = 0.01
+ORDER_STEP_SIZE = 0.05
 
 # 价格缩放倍数
 PRICE_MINIFICATION = 1
@@ -95,5 +91,26 @@ MarketMakers = [
     {"CycleTime": 27, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
     {"CycleTime": 29, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
     {"CycleTime": 31, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 33, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"}
+    {"CycleTime": 33, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
+
+
+    {"CycleTime": 1, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 2, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 4, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 6, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
+    #
+    {"CycleTime": 8, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 10, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 12, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 14, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
+    #
+    {"CycleTime": 16, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 18, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 20, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 22, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"},
+    #     #
+    {"CycleTime": 24, "Email": "eth_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 26, "Email": "eth_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 30, "Email": "eth_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 32, "Email": "eth_yuhu04@163.com", "Password": "123456yuhu"}
 ]
