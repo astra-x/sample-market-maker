@@ -87,18 +87,22 @@ class ClientExchangeInterface:
             self.executive_info["cancel_order_ok_num"] += 1
 
 
+class ClientWsExchangeInterface:
+    def __init__(self):
+        self.ws_client = client.WsClient()
+
+    def depath_info(self):
+        return self.ws_client.query_depath()
 
 
 class OrderManager:
     def __init__(self, cycleTime, email, password):
-
-        self.CycleTime = settings.CycleTime if settings.CycleTime else cycleTime
+        self.cycleTime = cycleTime
         self.email = email if email else settings.Email
         self.password = password if password else settings.Password
-        time.sleep(self.CycleTime)  # 这是为了两个目的，  一是不同时那么多请求去链接local websocket以免被禁用，二是不同时重置order
         self.exchange_client = ClientExchangeInterface(email=self.email, password=self.password)
-        # Once exchange is created, register exit handler that will always cancel orders
-        # on any error.
+        self.exchange_ws_client = ClientWsExchangeInterface()
+
         atexit.register(self.exit)
         signal.signal(signal.SIGCHLD, self.exit)
         self.Exit = False
@@ -108,24 +112,78 @@ class OrderManager:
         self.exchange_client.cancel_all_orders()
 
     def get_price_offset(self):
-        max_set_price = settings.MaxSetPrice
-        min_set_price = settings.MinSetPrice
-        start_position_price = round(random.uniform(min_set_price, max_set_price),2)
+        depath_info = self.exchange_ws_client.depath_info()
+        bids = depath_info["bids"]
+        buy_price_list = sorted([float(i[0]) for i in bids])
+        asks = depath_info["asks"]
+        sell_price_list = sorted([float(i[0]) for i in asks])
+        high_buy_price = buy_price_list[-1]
+        low_sell_price = sell_price_list[0]
+        start_position_price = round(random.uniform(low_sell_price, high_buy_price), 2)
         return start_position_price
+
     ###
     # Orders
     ###
     def place_orders(self):
         """Create order items for use in convergence."""
-        buy_orders = []
-        sell_orders = []
         price = self.get_price_offset()
-        quantity = round(random.uniform(settings.OrderMinQuantity, settings.OrderMaxQuantity), 2)
-        buy_order = {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2}
-        sell_order = {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 1}
-        buy_orders.append(buy_order)
-        sell_orders.append(sell_order)
-        self.converge_orders(buy_orders, sell_orders)
+        quantity = round(random.uniform(settings.OrderMinQuantity, settings.OrderMaxQuantity), 4)
+        if settings.Side == 1:
+            # 1.下卖单
+            sell_order = {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 1}
+            sell_orders = [sell_order]
+            self.exchange_client.create_bulk_orders(orders=sell_orders)
+        else:
+            buy_order = {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2}
+            buy_orders = [buy_order]
+            self.exchange_client.create_bulk_orders(orders=buy_orders)
+        # 2.过0.5s后
+        time.sleep(settings.Interval)
+        # 3.查询订单,判断订单情况
+        opened_orders = self.exchange_client.get_orders()
+        for order in opened_orders:
+            self.handle_already_created_order(order)
+
+    def handle_already_created_order(self, order):
+        # 如果开始下的是卖单
+        if order["side"] == 1:
+            # 1.判断订单存在的位置
+            depath_info = self.exchange_ws_client.depath_info()
+            asks = depath_info["asks"]
+            sell_price_list = [float(i[0]) for i in asks]
+            sorted(sell_price_list)
+            if sell_price_list[0] == float(order["price"]):
+                # 说明在卖一位置，下相反的订单
+                order["side"] = 2
+                buy_orders = [order]
+                self.exchange_client.create_bulk_orders(orders=buy_orders)
+                # 这时候再去查询存在的订单
+                opened_orders = self.exchange_client.get_orders()
+                # 撤掉所有订单
+                self.cancel_bulk_orders(to_cancel=opened_orders)
+            else:
+                # 说明不在卖一位置，撤掉卖单
+                self.cancel_bulk_orders(to_cancel=[order])
+        # 如果开始下的是买单
+        else:
+            # 1.判断订单存在的位置
+            depath_info = self.exchange_ws_client.depath_info()
+            bids = depath_info["bids"]
+            buy_price_list = [float(i[0]) for i in bids]
+            sorted(buy_price_list)
+            if buy_price_list[0] == float(order["price"]):
+                # 说明在买一位置，下相反的订单
+                order["side"] = 1
+                sell_orders = [order]
+                self.exchange_client.create_bulk_orders(orders=sell_orders)
+                # 这时候再去查询存在的订单
+                opened_orders = self.exchange_client.get_orders()
+                # 撤掉所有订单
+                self.cancel_bulk_orders(to_cancel=opened_orders)
+            else:
+                # 说明不在买一的位置,撤掉买单
+                self.cancel_bulk_orders(to_cancel=[order])
 
     def prepare_order(self, index):
         """Create an order object."""
@@ -174,20 +232,18 @@ class OrderManager:
             start_time_timestamp = int(time.mktime(time.strptime(settings.StartTime, "%Y-%m-%d %H:%M:%S")))
             end_time_timestamp = int(time.mktime(time.strptime(settings.EndTime, "%Y-%m-%d %H:%M:%S")))
             if not (start_time_timestamp < now < end_time_timestamp):
-                time.sleep(self.CycleTime)
-                self.print_executive_report()
+                time.sleep(self.cycleTime)
                 continue
             # 周期内执行几次（随机）
-            low_frequency = settings.LowFrequency
-            high_frequency = settings.HighFrequency
-            random_frequency = random.randint(low_frequency, high_frequency)
-            for i in range(random_frequency):
-                sleep(self.CycleTime / random_frequency)
-                try:
-                    self.place_orders()
-                except Exception as e:
-                    print("run_loop Exception as e:", e)
-                    continue
+            max_cycle_time = settings.MaxCycleTime
+            min_cycle_time = settings.MinCycleTime
+            cycle_time = round(random.uniform(min_cycle_time, max_cycle_time), 2)
+            sleep(cycle_time)
+            try:
+                self.place_orders()
+            except Exception as e:
+                print("run_loop Exception as e:", e)
+                continue
 
     def restart(self):
         logger.info("Restarting the market maker...")

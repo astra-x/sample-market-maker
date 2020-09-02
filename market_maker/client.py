@@ -1,5 +1,6 @@
 """Client API Connector."""
 from __future__ import absolute_import
+from market_maker.ws.client_ws_thread import ClientWebsocket
 import requests
 import time
 import datetime
@@ -100,7 +101,7 @@ class Client(object):
             },
             verb="POST"
         )
-        if "result"in response and response["result"]:
+        if "result" in response and response["result"]:
             orders.extend(response["result"]["records"])
             total_order_num = response["result"]["total"]
             offset_amount = math.ceil(total_order_num / limit)
@@ -264,12 +265,22 @@ class Client(object):
                 print("retry error")
                 return response
         except Exception as e:
-            print("_curl_client  except Exception as e:",e)
+            print("_curl_client  except Exception as e:", e)
 
         # Reset retry counter on success
         self.retries = 0
 
         if response:
-            response=response.json()
-            print("url---------->:{},----------------->postdic:{}---------response----->:{}".format(url,postdict,response))
+            response = response.json()
+            print("url---------->:{},----------------->postdic:{}---------response----->:{}".format(url, postdict,
+                                                                                                    response))
         return response
+
+
+class WsClient(object):
+    def __init__(self):
+        self.client_ws = ClientWebsocket()
+
+    def query_depath(self):
+        self.client_ws.query_depath()
+        return self.client_ws.data["depath"]

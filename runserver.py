@@ -46,9 +46,8 @@ if __name__=="__main__":
 
     MarketMakers = [
         # 创建1s周期的market-maker服务
-        {"CycleTime": 1, "Email": "sdc_yuhu01@163.com", "Password": "123456yuhu","STATUS":1},
+        {"CycleTime": 1, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu","STATUS":1},
     ]
-
     # #第一步：起服务，将参数传入MM进程里，对setting配置进行重置
     p_dic ={}
     manager = Manager()
