@@ -212,12 +212,10 @@ class OrderManager:
     def prepare_order(self, index):
         """Create an order object."""
         # 这是创造数量的策略
-        if settings.RANDOM_ORDER_SIZE is True:
-            quantity = random.randint(settings.MIN_ORDER_SIZE, settings.MAX_ORDER_SIZE)
-        else:
 
-            quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
-                             (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
+
+        quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
+                         (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
 
         # 这是创造价格的策略
         price = self.get_price_offset(index)
