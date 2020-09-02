@@ -221,7 +221,7 @@ class OrderManager:
         else:
 
             quantity =round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
-                            (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 2)
+                            (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 4)
 
 
         # 这是创造价格的策略
