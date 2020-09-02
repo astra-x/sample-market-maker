@@ -37,12 +37,12 @@ Client_WS_URL="ws://18.183.178.183:19090"
 #order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE=False
 # 随机生成的quantitiy最大是多少
-MAX_ORDER_SIZE=0.3
+MAX_ORDER_SIZE=10
 # 随机生成的quantitiy最小是多少
 MIN_ORDER_SIZE=0.01
 
 # 基础数量最大
-ORDER_START_MAX_SIZE = 1
+ORDER_START_MAX_SIZE = 50
 # 基础数量最小
 ORDER_START_MIN_SIZE = 0.01
 
