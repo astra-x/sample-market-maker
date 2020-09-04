@@ -26,7 +26,7 @@ CONTRACT = "ETH_USD"
 
 ##url
 
-Client_HTTP_URL = "https://api.hudex.one/"
+Client_HTTP_URL = "http://robot.hudex.one"
 Client_WS_URL = "ws://18.183.178.183:19090"
 
 # order -quantitiy是否随机生成
