@@ -1,3 +1,4 @@
+import random
 from decimal import Decimal
 from market_maker import settings
 
@@ -11,7 +12,7 @@ def toNearest(num, tickSize):
 
 
 def toNearest2(start_position,index):
-    start_position=round(float(start_position)/settings.PRICE_MINIFICATION,4)
+    start_position=round(float(start_position)/settings.PRICE_MINIFICATION,4)+random.uniform(0.0001, 0.00999)
     if index < 0:
         price = start_position + settings.PRICE_INTERVAL * (index + 1)
     else:
