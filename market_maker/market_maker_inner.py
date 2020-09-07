@@ -239,7 +239,7 @@ class OrderManager:
         if len(to_create) > 0:
             # print("to_create:", to_create)
             random.shuffle(to_create)
-            time.sleep(self.CycleTime)
+            time.sleep(0.5)
             orders_created = self.exchange_client.create_bulk_orders(to_create)
 
         return orders_created
