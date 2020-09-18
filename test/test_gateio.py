@@ -47,9 +47,16 @@ from websocket import create_connection
 import ssl
 from websocket import create_connection
 ws = create_connection("wss://ws.gate.io/v3/",http_proxy_host="127.0.0.1",http_proxy_port="7890",sslopt={"cert_reqs": ssl.CERT_NONE})
-# ws.send('{"id":12312, "method":"depth.subscribe", "params":[["BTC_USDT", 5, "0.01"], ["ETH_USDT", 5, "0"]]}')
-# ws.send('{"id":12312, "method":"depth.query", "params":["EOS_USTD", 5, "0.0001"]}')
-ws.send('{"id":12312, "method":"ticker.subscribe", "params":["EOS_USDT"]}')
+
+# ws.send('{"id":12312, "method":"ticker.query", "params":["EOS_USDT", 86400]}')
+# ws.send('{"id":12312, "method":"ticker.subscribe", "params":["BOT_USDT"]}')
+# ws.send('{"id":12309, "method":"trades.query", "params":["EOS_USDT", 2, 7177813]}')
+# ws.send('{"id":12312, "method":"trades.subscribe", "params":["BSV_USDT"]}')
+
+# ws.send('{"id":12312, "method":"depth.query", "params":["BSV_USTD", 5, "0.0001"]}')
+
+ws.send('{"id":12312, "method":"depth.subscribe", "params":[["BSV_USTD", 5, "0.01"]]}')
+
 
 while 1:
     print(ws.recv())
