@@ -6,6 +6,7 @@ import threading
 import ssl
 from time import sleep
 import json
+import gzip
 import logging
 from market_maker import settings
 from market_maker.utils.log import setup_custom_logger
@@ -15,6 +16,7 @@ from market_maker.utils.log import setup_custom_logger
 class HuobiWebsocket():
     # Don't grow a table larger than this amount. Helps cap memory usage.
     MAX_TABLE_LEN = 200
+
     def __init__(self):
         self.logger = logging.getLogger('root')
         self.__reset()
@@ -22,17 +24,15 @@ class HuobiWebsocket():
     def __del__(self):
         self.exit()
 
-    def connect(self, endpoint, symbol):
+    def connect(self, endpoint):
         '''Connect to the websocket and initialize data stores.'''
-        self.symbol = symbol
         # Get WS URL and connect.
-        wsURL= endpoint
+        wsURL = endpoint
         self.logger.info("Connecting to %s" % wsURL)
         self.__connect(wsURL)
         # 订阅盘口
         self.subscribe()
         self.logger.info('Connected to WS. Waiting for data images, this may take a moment...')
-
 
     # Lifecycle methods
     def error(self, err):
@@ -58,7 +58,8 @@ class HuobiWebsocket():
 
         setup_custom_logger('websocket', log_level=settings.LOG_LEVEL)
         self.wst = threading.Thread(
-            target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}))
+            target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}, http_proxy_host="127.0.0.1",
+                                               http_proxy_port="7890"))
         self.wst.daemon = True
         self.wst.start()
         self.logger.info("Started thread")
@@ -76,13 +77,14 @@ class HuobiWebsocket():
             self.exit()
             sys.exit(1)
 
-
     def __on_message(self, message):
         '''Handler for parsing WS messages.'''
-        message = json.loads(message)
+        gzip_message= gzip.decompress(message).decode("utf-8")
+        print("gzip_message:",gzip_message)
+        message = json.loads(gzip_message)
         channel = message['ch'] if 'ch' in message else None
         if channel:
-            self.data[channel]=message["tick"]
+            self.data[channel] = message["tick"]
 
     def __on_open(self):
         self.logger.debug("Websocket Opened.")
@@ -91,7 +93,7 @@ class HuobiWebsocket():
         self.logger.info('Websocket Closed')
         self.exit()
 
-    def __on_error(self,  error):
+    def __on_error(self, error):
         if not self.exited:
             self.error(error)
 
@@ -104,11 +106,10 @@ class HuobiWebsocket():
     def subscribe(self):
         self.subscribe_depath()
 
-
-# 订阅请求发送
-    #订阅盘口
-    def  subscribe_depath(self):
-        data={"sub": settings.SubTopicDepath,"id": "id1"}
+    # 订阅请求发送
+    # 订阅盘口
+    def subscribe_depath(self):
+        data = {"sub": settings.SubTopicDepath, "id": "id1"}
         try:
             json_data = json.dumps(data)
             self.ws.send(data=json_data)
@@ -117,10 +118,9 @@ class HuobiWebsocket():
             raise Exception("error subscribe depath ")
 
     def get_depath(self):
-        channel=settings.SubTopicDepath
-        ticker=self.data[channel] if self.data.get(channel) else []
+        channel = settings.SubTopicDepath
+        ticker = self.data[channel] if self.data.get(channel) else {}
         return ticker
-
 
 
 if __name__ == "__main__":
@@ -146,5 +146,3 @@ if __name__ == "__main__":
         json_data = json.dumps(data)
         ws.ws.send(data=json_data)
         sleep(1)
-
-

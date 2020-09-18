@@ -47,15 +47,20 @@ class GateIoExchangeInterface:
 
 class HuobiExchangeInterface:
     def __init__(self):
-        self.huobi = huobi.Huobi(base_url=settings.GATEIO_URL)
+        self.huobi = huobi.Huobi(base_url=settings.HUOBI_URL)
 
     def get_start_position(self):
-
-
-
-
-
-        return self.huobi.get_depath()
+        bids = self.huobi.get_depath().get("bids")
+        asks = self.huobi.get_depath().get("asks")
+        bids_price_l = []
+        asks_price_l = []
+        for a in asks:
+            asks_price_l.append(a[0])
+        for b in bids:
+            bids_price_l.append(b[0])
+        start_position = (max(bids_price_l) + min(asks_price_l)) / 2
+        print("----------------->:start_position:",start_position)
+        return start_position
 
 
 class ClientExchangeInterface:

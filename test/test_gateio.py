@@ -44,10 +44,16 @@ from websocket import create_connection
 
 
 
-# from websocket import create_connection
-# ws = create_connection("wss://ws.gate.io/v3/")
-# ws.send('{"id":12312, "method":"trades.subscribe", "params":["ETH_USDT", "BTC_USDT"]}')
-# print(ws.recv())
+import ssl
+from websocket import create_connection
+ws = create_connection("wss://ws.gate.io/v3/",http_proxy_host="127.0.0.1",http_proxy_port="7890",sslopt={"cert_reqs": ssl.CERT_NONE})
+# ws.send('{"id":12312, "method":"depth.subscribe", "params":[["BTC_USDT", 5, "0.01"], ["ETH_USDT", 5, "0"]]}')
+# ws.send('{"id":12312, "method":"depth.query", "params":["EOS_USTD", 5, "0.0001"]}')
+ws.send('{"id":12312, "method":"ticker.subscribe", "params":["EOS_USDT"]}')
+
+while 1:
+    print(ws.recv())
+    time.sleep(1)
 
 # import ssl
 #
@@ -55,3 +61,15 @@ from websocket import create_connection
 # ws = create_connection("wss://fx-ws-testnet.gateio.ws/v4/ws",sslopt={"cert_reqs": ssl.CERT_NONE})
 # ws.send('{"id":12309, "method":"trades.query", "params":["EOS_USDT", 2, 7177813]}')
 # print(ws.recv())
+
+#
+# from websocket import create_connection
+# import ssl
+#
+# ws = create_connection("wss://fx-ws-testnet.gateio.ws/v4/ws/btc",sslopt={"cert_reqs": ssl.CERT_NONE})
+# ws.send('{"time" : 123456, "channel" : "futures.tickers", "event": "subscribe", "payload" : ["YFV_USD"]}')
+# while 1:
+#     print(ws.recv())
+#     time.sleep(1)
+
+

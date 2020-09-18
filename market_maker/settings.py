@@ -35,6 +35,7 @@ SubTopicDepath="market.usdtkrw.depth.step0"
 ##url
 
 Client_HTTP_URL = "http://robot.hudex.one"
+
 Client_WS_URL = "ws://18.183.178.183:19090"
 
 # order -quantitiy是否随机生成
@@ -83,23 +84,23 @@ ClientSymbol = "USDT"
 # 创建多个账户共同执行
 MarketMakers = [
     # 创建3s周期的market-maker服务
-    {"CycleTime": 3, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 5, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 7, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 9, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"},
-    #
-    {"CycleTime": 11, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 13, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 15, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 17, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"},
-    #
-    {"CycleTime": 19, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 21, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 23, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 25, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"},
-    #     #
-    {"CycleTime": 27, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 29, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 31, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 33, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"}
+    {"CycleTime": 3, "Email": "sdc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 5, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 7, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 9, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"},
+    # #
+    # {"CycleTime": 11, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 13, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 15, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 17, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"},
+    # #
+    # {"CycleTime": 19, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 21, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 23, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 25, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"},
+    # #     #
+    # {"CycleTime": 27, "Email": "btc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 29, "Email": "btc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 31, "Email": "btc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 33, "Email": "btc_yuhu04@163.com", "Password": "123456yuhu"}
 ]
