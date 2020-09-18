@@ -9,6 +9,7 @@ import atexit
 import signal
 from market_maker import client
 from market_maker import gateio
+from market_maker import huobi
 from market_maker import settings
 from market_maker.utils import constants, errors, math
 from market_maker.utils.log import logger
@@ -42,6 +43,19 @@ class GateIoExchangeInterface:
     def is_open(self):
         """Check that websockets are still open."""
         return not self.gateio.ws.exited
+
+
+class HuobiExchangeInterface:
+    def __init__(self):
+        self.huobi = huobi.Huobi(base_url=settings.GATEIO_URL)
+
+    def get_start_position(self):
+
+
+
+
+
+        return self.huobi.get_depath()
 
 
 class ClientExchangeInterface:
@@ -165,6 +179,7 @@ class OrderManager:
         time.sleep(self.CycleTime)  # 这是为了两个目的，  一是不同时那么多请求去链接gateio websocket以免被禁用，二是不同时重置order
         self.exchange = GateIoExchangeInterface()
         self.exchange_client = ClientExchangeInterface(email=email, password=password)
+        self.huobi_exchange = HuobiExchangeInterface()
         # Once exchange is created, register exit handler that will always cancel orders
         # on any error.
         atexit.register(self.exit)
@@ -178,11 +193,7 @@ class OrderManager:
         self.exchange_client.init_executive_info()
 
     def get_ticker(self):
-        ticker = self.exchange.get_ticker()
-        if ticker:
-            self.start_position = ticker[0]["index_price"]
-
-        return ticker
+        self.start_position = self.huobi_exchange.get_start_position()
 
     def get_price_offset(self, index):
 
@@ -212,7 +223,6 @@ class OrderManager:
     def prepare_order(self, index):
         """Create an order object."""
         # 这是创造数量的策略
-
 
         quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
                          (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 4)

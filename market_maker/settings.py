@@ -14,13 +14,21 @@ LOG_LEVEL = logging.INFO
 
 WATCHED_FILES = []
 
-# -----------------------------------GateIo  Setting---------------------------------------
+# -----------------------------------gateio  Setting---------------------------------------
 
 # API URL.
 GATEIO_URL = "wss://fx-ws-testnet.gateio.ws/v4/ws"
 
 SYMBOL = "btc"
 CONTRACT = "BTC_USD"
+
+# -----------------------------------Huobi  Setting---------------------------------------
+
+# API URL.
+HUOBI_URL = "wss://api-cloud.huobi.co.kr/ws"
+
+SubTopicDepath="market.usdtkrw.depth.step0"
+
 
 # -----------------------------------Client  Setting-----------------------------------------
 
