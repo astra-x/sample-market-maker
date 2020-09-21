@@ -19,8 +19,8 @@ WATCHED_FILES = []
 # API URL.
 GATEIO_URL = "wss://ws.gate.io/v3/"
 
-SYMBOL = "yfi"
-CONTRACT = "YFI_USDT"
+SYMBOL = "yfii"
+CONTRACT = "YFII_USDT"
 
 SUB_TOPIC_TICKER="ticker.subscribe"
 
@@ -67,7 +67,7 @@ Email = "youtao.xing@icloud.com"
 Password = "1234!abcd"
 
 # 交易品种
-ClientContract = "YFI/USDT"
+ClientContract = "YFII/USDT"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime = 10
 # 运行时间
@@ -82,23 +82,23 @@ ClientSymbol = "USDT"
 # 创建多个账户共同执行
 MarketMakers = [
     # 创建3s周期的market-maker服务
-    {"CycleTime": 3, "Email": "yfi_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 5, "Email": "yfi_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 7, "Email": "yfi_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 9, "Email": "yfi_yuhu04@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 3, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 5, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 7, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 9, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
     # #
-    # {"CycleTime": 11, "Email": "yfi_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 13, "Email": "yfi_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 15, "Email": "yfi_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 17, "Email": "yfi_yuhu04@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 11, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 13, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 15, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 17, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
     # # #
-    # {"CycleTime": 19, "Email": "yfi_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 21, "Email": "yfi_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 23, "Email": "yfi_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 25, "Email": "yfi_yuhu04@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 19, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 21, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 23, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 25, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
     # #
-    # {"CycleTime": 27, "Email": "yfi_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 29, "Email": "yfi_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 31, "Email": "yfi_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 33, "Email": "yfi_yuhu04@163.com", "Password": "123456yuhu"}
+    # {"CycleTime": 27, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 29, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 31, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 33, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"}
 ]
