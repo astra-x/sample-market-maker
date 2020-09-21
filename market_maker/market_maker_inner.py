@@ -217,7 +217,6 @@ class OrderManager:
         for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
             buy_order = self.prepare_order(-i)
-
             sell_order = self.prepare_order(i)
             buy_orders.append(buy_order)
             sell_orders.append(sell_order)
