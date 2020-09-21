@@ -235,6 +235,14 @@ class OrderManager:
         # 这是创造价格的策略
         price = self.get_price_offset(index)
 
+        # 模拟拉盘和砸盘
+        if index<0 and random.randint(1, 9) == 1:
+            price=price*1.1
+            quantity=quantity*4
+        if index>0 and random.randint(1,9)==2:
+            price=price*0.9
+            quantity=quantity*4
+
         return {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2 if index < 0 else 1}
 
     def converge_orders(self, buy_orders, sell_orders):
