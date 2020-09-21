@@ -27,9 +27,14 @@ SUB_TOPIC_TICKER="ticker.subscribe"
 # -----------------------------------Client  Setting-----------------------------------------
 
 ##url
+# Client_HTTP_URL = "http://robot.hudex.one"
+#
+# Client_WS_URL = "ws://18.183.178.183:19090"
 
-Client_HTTP_URL = "http://robot.hudex.one"
-Client_WS_URL = "ws://18.183.178.183:19090"
+# 本地测试
+Client_HTTP_URL = "http://47.75.14.147:3000"
+
+Client_WS_URL = "ws://47.56.8.19:19090"
 
 # order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE = False
@@ -78,22 +83,22 @@ ClientSymbol = "USDT"
 MarketMakers = [
     # 创建3s周期的market-maker服务
     {"CycleTime": 3, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 5, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 7, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 9, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 5, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 7, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 9, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"},
 
-    # {"CycleTime": 11, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 13, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 15, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 17, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"},
-    # #
-    # {"CycleTime": 19, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 21, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 23, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 25, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"},
-    # #     #
-    # {"CycleTime": 27, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 29, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 31, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 33, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"}
+    {"CycleTime": 11, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 13, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 15, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 17, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"},
+    #
+    {"CycleTime": 19, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 21, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 23, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 25, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"},
+    #     #
+    {"CycleTime": 27, "Email": "bch_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 29, "Email": "bch_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 31, "Email": "bch_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 33, "Email": "bch_yuhu04@163.com", "Password": "123456yuhu"}
 ]
