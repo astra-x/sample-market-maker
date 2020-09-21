@@ -64,7 +64,6 @@ class ClientWebsocket():
                                          on_close=self.__on_close,
                                          on_open=self.__on_open,
                                          on_error=self.__on_error,
-
                                          )
 
         setup_custom_logger('websocket', log_level=settings.LOG_LEVEL)

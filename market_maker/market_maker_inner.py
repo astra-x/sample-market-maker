@@ -59,7 +59,7 @@ class HuobiExchangeInterface:
         for b in bids:
             bids_price_l.append(b[0])
         start_position = (max(bids_price_l) + min(asks_price_l)) / 2
-        print("----------------->:start_position:",start_position)
+
         return start_position
 
 
@@ -204,6 +204,7 @@ class OrderManager:
     def get_price_offset(self, index):
 
         start_position = self.start_position
+        print("------------start_position:",start_position)
         # 这是创造价格的策略
         return math.toNearest2(start_position, index)  # 现在的
 
@@ -229,20 +230,10 @@ class OrderManager:
     def prepare_order(self, index):
         """Create an order object."""
         # 这是创造数量的策略
-
         quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
                          (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 4)
-
         # 这是创造价格的策略
         price = self.get_price_offset(index)
-
-        # 模拟拉盘和砸盘
-        # if index<0 and random.randint(1, 9) == 1:
-        #     price=price*1.1
-        #     quantity=quantity*4
-        # if index>0 and random.randint(1,9)==2:
-        #     price=price*0.9
-        #     quantity=quantity*4
 
         return {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2 if index < 0 else 1}
 
@@ -255,7 +246,7 @@ class OrderManager:
             # print("to_create:", to_create)
             random.shuffle(to_create)
             time.sleep(1)
-            # orders_created = self.exchange_client.create_bulk_orders(to_create)
+            orders_created = self.exchange_client.create_bulk_orders(to_create)
 
         return orders_created
 
@@ -288,13 +279,12 @@ class OrderManager:
 
     def check_connection(self):
         """Ensure the WS connections are still open."""
-        return self.exchange.is_open() and self.exchange_client.is_open()
+        return  self.exchange_client.is_open()
 
     def exit(self):
         logger.info("Shutting down. All open orders will be cancelled.")
         try:
             self.exchange_client.cancel_all_orders()
-            self.exchange.gateio.exit()
         except errors.AuthenticationError as e:
             logger.info("Was not authenticated; could not cancel orders.")
         except Exception as e:

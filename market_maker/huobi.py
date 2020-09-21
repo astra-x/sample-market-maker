@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 import logging
 from market_maker.ws.huobi_ws_thread import  HuobiWebsocket
-
+from market_maker import settings
 
 class Huobi(object):
 
@@ -20,10 +20,10 @@ class Huobi(object):
         self.exit()
 
     def exit(self):
-        self.ws.exit()
+        return
 
     # Public methods
 
     def get_depath(self):
 
-        return self.ws.get_depath()
+        return self.ws.get_depath(settings.SubTopicDepath)
