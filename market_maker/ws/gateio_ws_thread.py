@@ -61,8 +61,12 @@ class GateioWebsocket():
                                          on_error=self.__on_error)
 
         setup_custom_logger('websocket', log_level=settings.LOG_LEVEL)
-        self.wst = threading.Thread(
-            target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE},http_proxy_host="127.0.0.1",http_proxy_port="7890"))
+        if settings.PROXY:
+            self.wst = threading.Thread(
+                target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE},http_proxy_host="127.0.0.1",http_proxy_port="7890"))
+        else:
+            self.wst = threading.Thread(
+                target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}))
         self.wst.daemon = True
         self.wst.start()
         self.logger.info("Started thread")
