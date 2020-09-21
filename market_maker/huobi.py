@@ -14,7 +14,6 @@ class Huobi(object):
         self.base_url = base_url
         # Create websocket for streaming data
         self.ws = HuobiWebsocket()
-        self.ws.connect(base_url)
 
     def __del__(self):
         self.exit()

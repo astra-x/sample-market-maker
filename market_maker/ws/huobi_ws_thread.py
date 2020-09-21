@@ -19,6 +19,7 @@ class HuobiWebsocket():
         self.connect(endpoint=settings.HUOBI_URL)
         self.subscribe_depath(settings.SubTopicDepath)
         self.put_data()
+        time.sleep(5)
 
     def connect(self, endpoint,max_retries=3):
         def retry():
