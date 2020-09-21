@@ -62,7 +62,7 @@ class GateioWebsocket():
 
         setup_custom_logger('websocket', log_level=settings.LOG_LEVEL)
         self.wst = threading.Thread(
-            target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}))
+            target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE},http_proxy_host="127.0.0.1",http_proxy_port="7890"))
         self.wst.daemon = True
         self.wst.start()
         self.logger.info("Started thread")
@@ -84,21 +84,9 @@ class GateioWebsocket():
     def __on_message(self, message):
         '''Handler for parsing WS messages.'''
         message = json.loads(message)
-        channel = message['channel'] if 'channel' in message else None
-        event = message['event'] if 'event' in message else None
-        if event=="subscribe":
-            if message['result']["status"]=="success":
-                self.logger.debug("Subscribed to %s." % message['channel'])
-            else:
-                self.error("Unable to subscribe to %s." %
-                           (message['channel']))
-
-        else:
-            if event == "update":
-                result = message['result']
-                if result:
-                    self.data[channel]=result
-
+        channel = message['method'] if 'method' in message else None
+        if channel=="ticker.update":
+            self.data[message["params"][0]]=message["params"][1]
 
     def __on_open(self):
         self.logger.debug("Websocket Opened.")
@@ -125,13 +113,10 @@ class GateioWebsocket():
 # 订阅请求发送
     #订阅盘口
     def  subscribe_ticker(self):
-        # {"time": 123456, "channel": "futures.tickers", "event": "subscribe", "payload": ["BTC_USD"]}
-
         data={
-            "channel": "futures.tickers",
-            "time": 1,
-            "event": "subscribe",
-            "payload": [settings.CONTRACT]
+            "id": 12312,
+            "method": settings.SUB_TOPIC_TICKER,
+            "params": [settings.CONTRACT]
         }
         try:
             json_data = json.dumps(data)
@@ -141,35 +126,17 @@ class GateioWebsocket():
             raise Exception("error subscribe ticker ")
 
     def subscribe_trades(self):
-        data={
-            "channel": "futures.trades",
-            "time": 1,
-            "event": "subscribe",
-            "payload": [settings.CONTRACT]
-        }
-        try:
-            json_data = json.dumps(data)
-            self.ws.send(data=json_data)
-        except:
-            print("error subscribe trades ")
-            raise Exception("error subscribe trades ")
-
-
+       pass
 
     def get_ticker(self):
-        channel="futures.tickers"
+        contract=settings.CONTRACT
         ticker=[]
-        if  channel in self.data:
-            ticker=self.data[channel] if self.data[channel] else []
+        if  contract in self.data:
+            ticker=self.data[contract] if self.data[contract] else []
         return ticker
 
     def get_trades(self):
-
-        channel="futures.trades"
-        trades=[]
-        if  channel in self.data:
-            trades=self.data[channel] if self.data[channel] else []
-        return trades
+        return []
 
 
 
