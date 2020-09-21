@@ -87,9 +87,9 @@ ClientSymbol = "USDT"
 MarketMakers = [
     # 创建3s周期的market-maker服务
     {"CycleTime": 3, "Email": "krwt_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 5, "Email": "krwt_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 7, "Email": "krwt_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 9, "Email": "krwt_yuhu04@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 5, "Email": "krwt_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 7, "Email": "krwt_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 9, "Email": "krwt_yuhu04@163.com", "Password": "123456yuhu"},
     #
     # {"CycleTime": 11, "Email": "krwt_yuhu01@163.com", "Password": "123456yuhu"},
     # {"CycleTime": 13, "Email": "krwt_yuhu02@163.com", "Password": "123456yuhu"},

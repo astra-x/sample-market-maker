@@ -50,8 +50,8 @@ class HuobiExchangeInterface:
         self.huobi = huobi.Huobi(base_url=settings.HUOBI_URL)
 
     def get_start_position(self):
-        bids = self.huobi.get_depath().get("bids")
-        asks = self.huobi.get_depath().get("asks")
+        bids = self.huobi.get_depath().get("bids",[])
+        asks = self.huobi.get_depath().get("asks",[])
         bids_price_l = []
         asks_price_l = []
         for a in asks:
