@@ -50,9 +50,11 @@ class HuobiExchangeInterface:
         self.huobi = huobi.Huobi(base_url=settings.HUOBI_URL)
 
     def get_start_position(self):
-        depath=self.huobi.get_depath()
-        bids = depath.get("bids",[])
-        asks = depath.get("asks",[])
+        depath = self.huobi.get_depath()
+        if depath is None:
+            return None
+        bids = depath.get("bids", [])
+        asks = depath.get("asks", [])
         bids_price_l = []
         asks_price_l = []
         for a in asks:
@@ -205,7 +207,7 @@ class OrderManager:
     def get_price_offset(self, index):
 
         start_position = self.start_position
-        print("------------start_position:",start_position)
+        print("------------start_position:", start_position)
         # 这是创造价格的策略
         return math.toNearest2(start_position, index)  # 现在的
 
@@ -237,12 +239,12 @@ class OrderManager:
         price = self.get_price_offset(index)
 
         # 模拟拉盘和砸盘
-        if index<0 and random.randint(1, 9) == 1:
-            price=price*1.1
-            quantity=quantity*4
-        if index>0 and random.randint(1,9)==2:
-            price=price*0.9
-            quantity=quantity*4
+        if index < 0 and random.randint(1, 9) == 1:
+            price = price * 1.1
+            quantity = quantity * 4
+        if index > 0 and random.randint(1, 9) == 2:
+            price = price * 0.9
+            quantity = quantity * 4
 
         return {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2 if index < 0 else 1}
 
@@ -288,7 +290,7 @@ class OrderManager:
 
     def check_connection(self):
         """Ensure the WS connections are still open."""
-        return  self.exchange_client.is_open()
+        return self.exchange_client.is_open()
 
     def exit(self):
         logger.info("Shutting down. All open orders will be cancelled.")

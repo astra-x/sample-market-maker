@@ -28,7 +28,10 @@ class HuobiWebsocket():
                 raise Exception("already max_retries ...")
             return self.connect(endpoint=settings.HUOBI_URL)
         try:
-            self.ws = create_connection(endpoint,sslopt={"cert_reqs": ssl.CERT_NONE})
+            if  settings.PROXY:
+                self.ws = create_connection(endpoint,sslopt={"cert_reqs": ssl.CERT_NONE}, http_proxy_host="127.0.0.1", http_proxy_port="7890")
+            else:
+                self.ws = create_connection(endpoint,sslopt={"cert_reqs": ssl.CERT_NONE})
         except:
             logging.error("cannot connect huobi")
             retry()
