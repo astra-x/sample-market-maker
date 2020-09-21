@@ -190,7 +190,7 @@ class OrderManager:
         atexit.register(self.exit)
         signal.signal(signal.SIGCHLD, self.exit)
 
-        self.reset()
+        # self.reset()
 
     def reset(self):
 

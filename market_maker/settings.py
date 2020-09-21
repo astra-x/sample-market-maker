@@ -27,20 +27,23 @@ CONTRACT = "BTC_USD"
 # API URL.
 HUOBI_URL = "wss://api-cloud.huobi.co.kr/ws"
 
-SubTopicDepath="market.usdtkrw.depth.step0"
-
+SubTopicDepath = "market.usdtkrw.depth.step0"
 
 # -----------------------------------Client  Setting-----------------------------------------
 
 ##url
+#
+# Client_HTTP_URL = "http://robot.hudex.one"
+#
+# Client_WS_URL = "ws://18.183.178.183:19090"
 
-Client_HTTP_URL = "http://robot.hudex.one"
+# test
+Client_HTTP_URL = "http://47.75.14.147:3000"
 
-Client_WS_URL = "ws://18.183.178.183:19090"
+Client_WS_URL = "ws://47.56.8.19:19090"
 
 # order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE = False
-
 
 # 基础数量最大
 ORDER_START_MAX_SIZE = 0.5
@@ -49,7 +52,6 @@ ORDER_START_MIN_SIZE = 0.0001
 
 # 数量间隔
 ORDER_STEP_SIZE = 0.005
-
 
 # 价格缩放倍数
 PRICE_MINIFICATION = 1
