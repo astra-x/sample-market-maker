@@ -19,8 +19,8 @@ WATCHED_FILES = []
 # API URL.
 GATEIO_URL = "wss://ws.gate.io/v3/"
 
-SYMBOL = "bchsv"
-CONTRACT = "BCHSV_USDT"
+SYMBOL = "etc"
+CONTRACT = "ETC_USDT"
 
 SUB_TOPIC_TICKER="ticker.subscribe"
 
@@ -67,7 +67,7 @@ Email = "youtao.xing@icloud.com"
 Password = "1234!abcd"
 
 # 交易品种
-ClientContract = "BCHSV/USDT"
+ClientContract = "ETC/USDT"
 # 每次place_order间隔时间,如果创建进程时没传则使用该默认CycleTime
 CycleTime = 10
 # 运行时间
@@ -82,23 +82,23 @@ ClientSymbol = "USDT"
 # 创建多个账户共同执行
 MarketMakers = [
     # 创建3s周期的market-maker服务
-    {"CycleTime": 3, "Email": "bchsv_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 5, "Email": "bchsv_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 7, "Email": "bchsv_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 9, "Email": "bchsv_yuhu04@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 3, "Email": "etc_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 5, "Email": "etc_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 7, "Email": "etc_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 9, "Email": "etc_yuhu04@163.com", "Password": "123456yuhu"},
 
-    {"CycleTime": 11, "Email": "bchsv_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 13, "Email": "bchsv_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 15, "Email": "bchsv_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 17, "Email": "bchsv_yuhu04@163.com", "Password": "123456yuhu"},
-    #
-    {"CycleTime": 19, "Email": "bchsv_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 21, "Email": "bchsv_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 23, "Email": "bchsv_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 25, "Email": "bchsv_yuhu04@163.com", "Password": "123456yuhu"},
-    #     #
-    {"CycleTime": 27, "Email": "bchsv_yuhu01@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 29, "Email": "bchsv_yuhu02@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 31, "Email": "bchsv_yuhu03@163.com", "Password": "123456yuhu"},
-    {"CycleTime": 33, "Email": "bchsv_yuhu04@163.com", "Password": "123456yuhu"}
+    # {"CycleTime": 11, "Email": "etc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 13, "Email": "etc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 15, "Email": "etc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 17, "Email": "etc_yuhu04@163.com", "Password": "123456yuhu"},
+    # #
+    # {"CycleTime": 19, "Email": "etc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 21, "Email": "etc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 23, "Email": "etc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 25, "Email": "etc_yuhu04@163.com", "Password": "123456yuhu"},
+    # #
+    # {"CycleTime": 27, "Email": "etc_yuhu01@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 29, "Email": "etc_yuhu02@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 31, "Email": "etc_yuhu03@163.com", "Password": "123456yuhu"},
+    # {"CycleTime": 33, "Email": "etc_yuhu04@163.com", "Password": "123456yuhu"}
 ]
