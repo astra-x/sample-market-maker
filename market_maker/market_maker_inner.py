@@ -182,7 +182,7 @@ class OrderManager:
         self.email = email if email else settings.Email
         self.password = password if password else settings.Password
         time.sleep(self.CycleTime)  # 这是为了两个目的，  一是不同时那么多请求去链接gateio websocket以免被禁用，二是不同时重置order
-        self.exchange = GateIoExchangeInterface()
+        # self.exchange = GateIoExchangeInterface()
         self.exchange_client = ClientExchangeInterface(email=email, password=password)
         self.huobi_exchange = HuobiExchangeInterface()
         # Once exchange is created, register exit handler that will always cancel orders
@@ -199,6 +199,7 @@ class OrderManager:
 
     def get_ticker(self):
         self.start_position = self.huobi_exchange.get_start_position()
+        return self.start_position
 
     def get_price_offset(self, index):
 
@@ -216,6 +217,7 @@ class OrderManager:
         for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
             buy_order = self.prepare_order(-i)
+
             sell_order = self.prepare_order(i)
             buy_orders.append(buy_order)
             sell_orders.append(sell_order)

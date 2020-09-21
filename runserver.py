@@ -58,5 +58,6 @@ if __name__=="__main__":
 
     for pname,p in p_dic.items():
         p.join()
+
     # OrderManager().restart()
     print('结束了')
