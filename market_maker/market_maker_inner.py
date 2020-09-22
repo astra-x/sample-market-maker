@@ -258,7 +258,7 @@ class OrderManager:
 
     def check_connection(self):
         """Ensure the WS connections are still open."""
-        return self.exchange.is_open() and self.exchange_client.is_open()
+        return True
 
     def exit(self):
         logger.info("Shutting down. All open orders will be cancelled.")
