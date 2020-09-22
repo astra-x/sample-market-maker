@@ -17,11 +17,6 @@ import os
 
 watched_files_mtimes = [(f, getmtime(f)) for f in settings.WATCHED_FILES]
 
-
-# Helpers
-#
-
-
 class GateIoExchangeInterface:
     def __init__(self):
 
@@ -197,7 +192,7 @@ class OrderManager:
         """Create order items for use in convergence."""
         buy_orders = []
         sell_orders = []
-        for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
+        for i in reversed(range(0, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
             buy_order = self.prepare_order(-i)
             sell_order = self.prepare_order(i)
@@ -213,20 +208,11 @@ class OrderManager:
         """Create an order object."""
         # 这是创造数量的策略
 
-
         quantity = round(random.uniform(settings.ORDER_START_MIN_SIZE, settings.ORDER_START_MAX_SIZE) + \
                          (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 4)
 
         # 这是创造价格的策略
         price = self.get_price_offset(index)
-
-        # 模拟拉盘和砸盘
-        # if index<0 and random.randint(1, 9) == 1:
-        #     price=price*1.1
-        #     quantity=quantity*4
-        # if index>0 and random.randint(1,9)==2:
-        #     price=price*0.9
-        #     quantity=quantity*4
 
         return {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2 if index < 0 else 1}
 
