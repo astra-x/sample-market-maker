@@ -17,21 +17,26 @@ WATCHED_FILES = []
 # -----------------------------------GateIo  Setting---------------------------------------
 
 # API URL.
-GATEIO_URL = "wss://fx-ws-testnet.gateio.ws/v4/ws"
+GATEIO_URL = "wss://ws.gate.io/v3/"
 
-SYMBOL = "btc"
-CONTRACT = "BTC_USD"
+SYMBOL = "bch"
+CONTRACT = "BCH_USDT"
 
-PROXY=True
+SUB_TOPIC_TICKER="ticker.subscribe"
+
+PROXY=False
 
 # -----------------------------------Client  Setting-----------------------------------------
 
 ##url
-
 Client_HTTP_URL = "http://robot.hudex.one"
+
 Client_WS_URL = "ws://18.183.178.183:19090"
 
-
+# 本地测试
+# Client_HTTP_URL = "http://47.75.14.147:3000"
+#
+# Client_WS_URL = "ws://47.56.8.19:19090"
 
 
 # order -quantitiy是否随机生成

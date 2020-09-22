@@ -30,7 +30,7 @@ class GateIo(object):
         self.exit()
 
     def exit(self):
-        self.ws.exit()
+        pass
 
     #
     # Public methods
@@ -39,15 +39,6 @@ class GateIo(object):
         """Get ticker data."""
 
         return self.ws.get_ticker()
-
-    def recent_trades(self):
-        """Get recent trades.
-        Returns
-        -------
-
-       [{"size":-32,"id":4359287,"create_time":1587448923,"price":"6897.8","contract":"BTC_USD"}]
-        """
-        return self.ws.get_trades()
 
 
 
