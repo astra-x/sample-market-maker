@@ -41,7 +41,7 @@ class GateIoExchangeInterface:
 
     def is_open(self):
         """Check that websockets are still open."""
-        return not self.gateio.ws.exited
+        return True
 
 
 class ClientExchangeInterface:
