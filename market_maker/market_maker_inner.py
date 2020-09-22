@@ -42,10 +42,10 @@ class GateIoExchangeInterface:
 
     def is_open(self):
         """Check that websockets are still open."""
-        return not self.gateio.ws.exited
+        return True
 
 
-    
+
 
 
 class ClientExchangeInterface:
@@ -185,7 +185,7 @@ class OrderManager:
     def get_ticker(self):
         ticker = self.exchange.get_ticker()
         if ticker:
-            self.start_position = ticker[0]["index_price"]
+            self.start_position = ticker["last"]
 
         return ticker
 
@@ -330,7 +330,7 @@ class OrderManager:
                 break
 
     def restart(self):
-        
+
         logger.info("Restarting the market maker...")
         os.execv(sys.executable, [sys.executable] + sys.argv)
 
