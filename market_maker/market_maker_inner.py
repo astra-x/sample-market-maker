@@ -41,7 +41,7 @@ class GateIoExchangeInterface:
 
     def is_open(self):
         """Check that websockets are still open."""
-        return not self.gateio.ws.exited
+        return True
 
 
 class ClientExchangeInterface:
@@ -197,7 +197,7 @@ class OrderManager:
         """Create order items for use in convergence."""
         buy_orders = []
         sell_orders = []
-        for i in reversed(range(1, settings.ORDER_PAIRS + 1)):
+        for i in reversed(range(0, settings.ORDER_PAIRS + 1)):
             self.get_ticker()
             buy_order = self.prepare_order(-i)
             sell_order = self.prepare_order(i)

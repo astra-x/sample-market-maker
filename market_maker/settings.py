@@ -24,6 +24,8 @@ CONTRACT = "YFII_USDT"
 
 SUB_TOPIC_TICKER="ticker.subscribe"
 
+PROXY=True
+
 # -----------------------------------Client  Setting-----------------------------------------
 
 ##url
@@ -41,7 +43,7 @@ RANDOM_ORDER_SIZE = False
 
 
 # 基础数量最大
-ORDER_START_MAX_SIZE = 0.5
+ORDER_START_MAX_SIZE = 1
 # 基础数量最小
 ORDER_START_MIN_SIZE = 0.0001
 
@@ -87,18 +89,18 @@ MarketMakers = [
     {"CycleTime": 7, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
     {"CycleTime": 9, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
     # #
-    # {"CycleTime": 11, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 13, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 15, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 17, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
-    # # #
-    # {"CycleTime": 19, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 21, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 23, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 25, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 11, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 13, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 15, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 17, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
     # #
-    # {"CycleTime": 27, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 29, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 31, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
-    # {"CycleTime": 33, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"}
+    {"CycleTime": 19, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 21, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 23, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 25, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"},
+    #
+    {"CycleTime": 27, "Email": "yfii_yuhu01@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 29, "Email": "yfii_yuhu02@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 31, "Email": "yfii_yuhu03@163.com", "Password": "123456yuhu"},
+    {"CycleTime": 33, "Email": "yfii_yuhu04@163.com", "Password": "123456yuhu"}
 ]
