@@ -206,8 +206,8 @@ class OrderManager:
 
     def get_price_offset(self, index):
 
-        start_position = round(1/self.start_position,8)
-        print("------------start_position:", start_position)
+        start_position = 1/self.start_position
+        # print("------------start_position:", start_position)
         # 这是创造价格的策略
         return math.toNearest2(start_position, index)  # 现在的
 
@@ -237,6 +237,8 @@ class OrderManager:
                          (abs(index) - 1) ** 2 * settings.ORDER_STEP_SIZE, 4)
         # 这是创造价格的策略
         price = self.get_price_offset(index)
+
+        print("------------price:", price)
 
         return {"id": 1000000015, "price": str(price), "amount": str(quantity), "side": 2 if index < 0 else 1}
 

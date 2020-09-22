@@ -42,7 +42,9 @@ from websocket import create_connection
 
 
 
-from websocket import create_connection
-ws = create_connection("wss://ws.gate.io/v3/")
-ws.send('{"id":12312, "method":"server.ping", "params":[]}')
-print(ws.recv())
+# from websocket import create_connection
+# ws = create_connection("wss://ws.gate.io/v3/")
+# ws.send('{"id":12312, "method":"server.ping", "params":[]}')
+# print(ws.recv())
+# a=1.111
+# print("%.4f"%a)

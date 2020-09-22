@@ -40,7 +40,7 @@ Client_WS_URL = "ws://18.183.178.183:19090"
 
 # 本地测试
 # Client_HTTP_URL = "http://47.75.14.147:3000"
-
+#
 # Client_WS_URL = "ws://47.56.8.19:19090"
 
 # order -quantitiy是否随机生成
@@ -58,7 +58,7 @@ ORDER_STEP_SIZE = 0.005
 PRICE_MINIFICATION = 1
 
 # 价格间隔
-PRICE_INTERVAL = 0.05
+PRICE_INTERVAL = 0.000000005
 
 # How many pairs of buy/sell orders to keep open
 ORDER_PAIRS = 15
