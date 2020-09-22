@@ -30,7 +30,7 @@ class GateIo(object):
         self.exit()
 
     def exit(self):
-        self.ws.exit()
+       pass
 
     #
     # Public methods
