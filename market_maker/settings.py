@@ -24,29 +24,31 @@ CONTRACT = "BCHSV_USDT"
 
 SUB_TOPIC_TICKER="ticker.subscribe"
 
+PROXY = False
+
 # -----------------------------------Client  Setting-----------------------------------------
 
 ##url
-# Client_HTTP_URL = "http://robot.hudex.one"
-#
-# Client_WS_URL = "ws://18.183.178.183:19090"
+Client_HTTP_URL = "http://robot.hudex.one"
+
+Client_WS_URL = "ws://18.183.178.183:19090"
 
 # 本地测试
-Client_HTTP_URL = "http://47.75.14.147:3000"
-
-Client_WS_URL = "ws://47.56.8.19:19090"
+# Client_HTTP_URL = "http://47.75.14.147:3000"
+#
+# Client_WS_URL = "ws://47.56.8.19:19090"
 
 # order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE = False
 
 
 # 基础数量最大
-ORDER_START_MAX_SIZE = 0.5
+ORDER_START_MAX_SIZE = 200
 # 基础数量最小
-ORDER_START_MIN_SIZE = 0.0001
+ORDER_START_MIN_SIZE = 0.1
 
 # 数量间隔
-ORDER_STEP_SIZE = 0.005
+ORDER_STEP_SIZE = 5
 
 
 # 价格缩放倍数
