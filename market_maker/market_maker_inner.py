@@ -206,7 +206,7 @@ class OrderManager:
 
     def get_price_offset(self, index):
 
-        start_position = self.start_position
+        start_position = round(1/self.start_position,8)
         print("------------start_position:", start_position)
         # 这是创造价格的策略
         return math.toNearest2(start_position, index)  # 现在的
