@@ -10,12 +10,14 @@ print(ws)
 # single-market mode subscription
 ws.send('{"sub": "market.usdtkrw.depth.step0","id": "id1"}')
 
+
+
 while 1:
     try:
 
         recv = gzip.decompress(ws.recv()).decode("utf-8")
         data=json.loads(recv)
-        print("ungzip data: ", type(data))
+        print("ungzip data: ", data)
         time.sleep(1)
     except:
         print("connect err")
