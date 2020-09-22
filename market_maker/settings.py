@@ -22,12 +22,17 @@ GATEIO_URL = "wss://fx-ws-testnet.gateio.ws/v4/ws"
 SYMBOL = "btc"
 CONTRACT = "BTC_USD"
 
+PROXY=True
+
 # -----------------------------------Client  Setting-----------------------------------------
 
 ##url
 
 Client_HTTP_URL = "http://robot.hudex.one"
 Client_WS_URL = "ws://18.183.178.183:19090"
+
+
+
 
 # order -quantitiy是否随机生成
 RANDOM_ORDER_SIZE = False
