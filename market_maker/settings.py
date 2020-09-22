@@ -19,8 +19,8 @@ WATCHED_FILES = []
 # API URL.
 GATEIO_URL = "wss://ws.gate.io/v3/"
 
-SYMBOL = "bch"
-CONTRACT = "BCH_USDT"
+SYMBOL = "eth"
+CONTRACT = "ETH_USDT"
 
 SUB_TOPIC_TICKER="ticker.subscribe"
 
