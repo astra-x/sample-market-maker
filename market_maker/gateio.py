@@ -26,11 +26,6 @@ class GateIo(object):
 
         self.timeout = timeout
 
-    def __del__(self):
-        self.exit()
-
-    def exit(self):
-        self.ws.exit()
 
     #
     # Public methods
