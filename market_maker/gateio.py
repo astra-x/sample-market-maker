@@ -26,11 +26,6 @@ class GateIo(object):
 
         self.timeout = timeout
 
-    def __del__(self):
-        self.exit()
-
-    def exit(self):
-        self.ws.exit()
 
     #
     # Public methods
@@ -40,14 +35,6 @@ class GateIo(object):
 
         return self.ws.get_ticker()
 
-    def recent_trades(self):
-        """Get recent trades.
-        Returns
-        -------
-
-       [{"size":-32,"id":4359287,"create_time":1587448923,"price":"6897.8","contract":"BTC_USD"}]
-        """
-        return self.ws.get_trades()
 
 
 
