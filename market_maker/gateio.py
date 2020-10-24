@@ -22,16 +22,8 @@ class GateIo(object):
 
         # Create websocket for streaming data
         self.ws = GateioWebsocket()
-        self.ws.connect(base_url, symbol)
-
+        self.ws.connect(base_url)
         self.timeout = timeout
-
-    def __del__(self):
-        self.exit()
-
-    def exit(self):
-        self.ws.exit()
-
     #
     # Public methods
     #
