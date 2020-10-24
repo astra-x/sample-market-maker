@@ -34,14 +34,6 @@ class GateIo(object):
 
         return self.ws.get_ticker()
 
-    def recent_trades(self):
-        """Get recent trades.
-        Returns
-        -------
-
-       [{"size":-32,"id":4359287,"create_time":1587448923,"price":"6897.8","contract":"BTC_USD"}]
-        """
-        return self.ws.get_trades()
 
 
 
