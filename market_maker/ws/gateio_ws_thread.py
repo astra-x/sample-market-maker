@@ -19,7 +19,7 @@ class GateioWebsocket():
         self.put_data()
         time.sleep(5)
 
-    def connect(self, endpoint, max_retries=3):
+    def connect(self, endpoint, max_retries=7):
         def retry():
             self.retries += 1
             if self.retries > max_retries:
