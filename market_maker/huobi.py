@@ -15,11 +15,6 @@ class Huobi(object):
         # Create websocket for streaming data
         self.ws = HuobiWebsocket()
 
-    def __del__(self):
-        self.exit()
-
-    def exit(self):
-        return
 
     # Public methods
 
