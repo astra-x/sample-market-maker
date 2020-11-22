@@ -30,7 +30,7 @@ PROXY=False
 ##url
 Client_HTTP_URL = "http://robot.hudex.one"
 
-Client_WS_URL = "ws://18.183.178.183:19090"
+Client_WS_URL = "ws://172.26.2.130:19090"
 
 # 本地测试
 # Client_HTTP_URL = "http://47.75.14.147:3000"
